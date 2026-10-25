@@ -1,0 +1,27 @@
+package mx.NovaCore.servicio;
+
+public class LineaCarrito {
+
+    private final Integer id;
+    private final String nombre;
+    private final double precio;
+    private final int cantidad;
+    private final double subtotal;
+    private final int stock;
+
+    public LineaCarrito(Integer id, String nombre, double precio, int cantidad, double subtotal, int stock) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.subtotal = subtotal;
+        this.stock = stock;
+    }
+
+    public Integer getId() { return id; }
+    public String getNombre() { return nombre; }
+    public double getPrecio() { return precio; }
+    public int getCantidad() { return cantidad; }
+    public double getSubtotal() { return subtotal; }
+    public int getStock() { return stock; }
+}
