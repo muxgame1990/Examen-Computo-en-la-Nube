@@ -11,11 +11,11 @@ import jakarta.validation.constraints.Size;
 public class ProductoNova {
 
     @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 30, message = "El nombre mide máximo 30 caracteres")
+    @Size(max = 80, message = "El nombre mide máximo 80 caracteres")
     private String nombre;
 
     @NotBlank(message = "La descripción es obligatoria")
-    @Size(max = 40, message = "La descripción mide máximo 40 caracteres")
+    @Size(max = 500, message = "La descripción mide máximo 500 caracteres")
     private String descripcion;
 
     @NotNull(message = "El precio es obligatorio")
@@ -31,6 +31,9 @@ public class ProductoNova {
     @NotNull(message = "Elige una categoría")
     private Categoria categoria;
 
+    @Size(max = 255, message = "La URL mide máximo 255 caracteres")
+    private String imagenUrl;
+
     public static ProductoNova productito(Producto p) {
         ProductoNova f = new ProductoNova();
         f.nombre = p.getNombre();
@@ -38,6 +41,7 @@ public class ProductoNova {
         f.precio = p.getPrecio();
         f.stock = p.getStock();
         f.categoria = p.getCategoria();
+        f.imagenUrl = p.getImagenUrl();
         return f;
     }
 
@@ -47,6 +51,7 @@ public class ProductoNova {
         p.setPrecio(Math.round(precio * 100.0) / 100.0);
         p.setStock(stock);
         p.setCategoria(categoria);
+        p.setImagenUrl(imagenUrl == null || imagenUrl.isBlank() ? null : imagenUrl.trim());
     }
 
     public String getNombre() { return nombre; }
@@ -63,4 +68,7 @@ public class ProductoNova {
 
     public Categoria getCategoria() { return categoria; }
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
+
+    public String getImagenUrl() { return imagenUrl; }
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

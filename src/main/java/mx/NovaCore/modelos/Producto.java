@@ -1,12 +1,6 @@
 package mx.NovaCore.modelos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "productos")
@@ -17,10 +11,10 @@ public class Producto {
     @Column(name = "producto_id")
     private Integer id;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 80)
     private String nombre;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 500)
     private String descripcion;
 
     @Column(nullable = false)
@@ -30,7 +24,11 @@ public class Producto {
     private Integer stock;
 
     @Convert(converter = CategoriaConverter.class)
+    @Column(nullable = false)
     private Categoria categoria;
+
+    @Column(name = "imagenProducto", length = 255)
+    private String imagenUrl;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -50,4 +48,6 @@ public class Producto {
     public Categoria getCategoria() { return categoria; }
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
+    public String getImagenUrl() { return imagenUrl; }
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 }

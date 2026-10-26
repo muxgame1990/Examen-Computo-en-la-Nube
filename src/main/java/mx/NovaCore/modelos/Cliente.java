@@ -1,34 +1,28 @@
 package mx.NovaCore.modelos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "usuario")
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cliente_id")
+    @Column(name = "usuario_id")
     private Integer id;
 
-    @Column(name = "id_publico", nullable = false, unique = true, length = 100)
+    @Column(name = "id_publico", nullable = false, unique = true, length = 45)
     private String idPublico;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 45)
     private String password;
 
-    @Column(name = "nombre_cliente", nullable = false, length = 40)
+    @Column(name = "nombre_usuario", nullable = false, length = 80)
     private String nombre;
 
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    @Column(nullable = false)
+    private Rol rol = Rol.cliente;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
