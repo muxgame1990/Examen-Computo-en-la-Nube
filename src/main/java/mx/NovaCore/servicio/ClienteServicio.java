@@ -1,6 +1,6 @@
 package mx.NovaCore.servicio;
 
-import mx.NovaCore.modelos.Usuario;
+import mx.NovaCore.modelos.Cliente;
 import mx.NovaCore.modelos.Rol;
 import mx.NovaCore.repositorio.ClienteRepositorio;
 
@@ -13,12 +13,12 @@ public class ClienteServicio {
         return clienteRepositorio;
     }
 
-    public Optional<Usuario> login (String usuario, String password) {
+    public Optional<Cliente> login (String usuario, String password) {
         return clienteRepositorio.findByIdPublico(usuario).filter(c -> c.getPassword().equals(password));
 
     }
 
-    public Usuario registrar (Usuario cliente) {
+    public Cliente registrar (Cliente cliente) {
         if (clienteRepositorio.existsByIdPublico(cliente.getIdPublico()))
             throw new RuntimeException("Usuario existente");
         cliente.setRol(Rol.cliente);
