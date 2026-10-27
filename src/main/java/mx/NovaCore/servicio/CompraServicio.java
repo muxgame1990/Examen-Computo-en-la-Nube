@@ -20,7 +20,7 @@ public class CompraServicio {
     }
 
     @Transactional
-    public Carrito comprar(String usuario, Map<Integer, Integer> carrito) {
+    public Carrito RealizarCompra(String usuario, Map<Integer, Integer> carrito) {
         Carrito orden = new Carrito(usuario);
         double total = 0;
         for (var item : carrito.entrySet()) {
@@ -31,7 +31,7 @@ public class CompraServicio {
         }
         return carritoRepositorio.save(orden);
     }
-    public List<Carrito> compras(String usuario) {
+    public List<Carrito> MisCompras(String usuario) {
         return carritoRepositorio.findByidPublicoClienteOrderByFechaOperacionDesc(usuario);
     }
 }
