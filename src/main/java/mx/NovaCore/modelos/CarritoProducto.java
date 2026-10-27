@@ -36,6 +36,10 @@ public class CarritoProducto {
         this.producto = producto;
     }
 
+    public CarritoProducto() {
+
+    }
+
     public CarritoProductoId getId() {
         return id;
     }

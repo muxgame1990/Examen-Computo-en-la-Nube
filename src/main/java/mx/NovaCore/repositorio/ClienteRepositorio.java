@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface ClienteRepositorio extends JpaRepository<Cliente, Integer> {
 
-    Optional<Cliente> findByIdPublicoCliente(String id);
-    boolean existsByIdPublicoCliente(String id);
+    Optional<Cliente> findByIdPublico(String id);
+    boolean existsByIdPublico(String id);
 
 
 }

@@ -51,7 +51,7 @@ public class ProductoNova {
         p.setPrecio(Math.round(precio * 100.0) / 100.0);
         p.setStock(stock);
         p.setCategoria(categoria);
-        p.setImagenUrl(imagenUrl == null || imagenUrl.isBlank() ? null : imagenUrl.trim());
+        p.setImagenUrl(imagenUrl == null || imagenUrl.isEmpty() ? null : imagenUrl.trim());
     }
 
     public String getNombre() { return nombre; }
