@@ -27,11 +27,8 @@ public class CompraServicio {
             if (productoRepositorio.updateStock(item.getKey(), item.getValue()) == 0)
                 throw new RuntimeException("No se puede comprar un producto");
             Producto p = productoRepositorio.findById(item.getKey()).orElse(null);
-            orden.getProductos().add(new CarritoProducto());
-            total += p.getPrecio() * item.getValue();
-
+            orden.getProductos().add(new CarritoProducto(orden, item.getValue(),p));
         }
-        //orden.setTotal(total);
         return carritoRepositorio.save(orden);
     }
     public List<Carrito> compras(String usuario) {

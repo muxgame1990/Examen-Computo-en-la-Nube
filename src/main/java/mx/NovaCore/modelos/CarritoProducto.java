@@ -30,6 +30,12 @@ public class CarritoProducto {
     @Column(name = "precioUnitario", nullable = false)
     private Double precioUnitario;
 
+    public CarritoProducto( Carrito carrito,Integer cantidad,Producto producto) {
+        this.carrito = carrito;
+        this.cantidad = cantidad;
+        this.producto = producto;
+    }
+
     public CarritoProductoId getId() {
         return id;
     }
