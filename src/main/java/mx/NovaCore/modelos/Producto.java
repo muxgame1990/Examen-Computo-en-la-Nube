@@ -1,6 +1,11 @@
 package mx.NovaCore.modelos;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "productos")
@@ -29,6 +34,12 @@ public class Producto {
 
     @Column(name = "imagenProducto", length = 255)
     private String imagenUrl;
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "nombreProducto", nullable = false, length = 45)
+    private String nombreProducto;
+    @OneToMany(mappedBy = "producto")
+    private Set<CarritoProducto> carritoProductos = new LinkedHashSet<>();
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -50,4 +61,20 @@ public class Producto {
 
     public String getImagenUrl() { return imagenUrl; }
     public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public Set<CarritoProducto> getCarritoProductos() {
+        return carritoProductos;
+    }
+
+    public void setCarritoProductos(Set<CarritoProducto> carritoProductos) {
+        this.carritoProductos = carritoProductos;
+    }
 }

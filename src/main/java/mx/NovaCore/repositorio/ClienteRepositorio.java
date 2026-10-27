@@ -1,13 +1,13 @@
 package mx.NovaCore.repositorio;
 
-import mx.NovaCore.modelos.Cliente;
+import mx.NovaCore.modelos.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ClienteRepositorio extends JpaRepository<Cliente, Integer> {
+public interface ClienteRepositorio extends JpaRepository<Usuario, Integer> {
 
-    Optional<Cliente> findByIdPublico(String id);
+    Optional<Usuario> findByIdPublico(String id);
     boolean existsByIdPublico(String id);
 
 
