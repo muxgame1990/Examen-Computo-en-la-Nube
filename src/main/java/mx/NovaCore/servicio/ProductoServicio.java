@@ -4,8 +4,10 @@ import mx.NovaCore.modelos.Categoria;
 import mx.NovaCore.modelos.Producto;
 import mx.NovaCore.repositorio.ProductoRepositorio;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
 
 public class ProductoServicio {
     ProductoRepositorio repositorio;
@@ -36,8 +38,9 @@ public class ProductoServicio {
         p.setImagenUrl(producto.getImagenUrl());
         repositorio.save(p);
     }
-    public void  delete(Producto producto){
-        repositorio.delete(producto);
+    public void delete(Integer id){
+        Producto p = repositorio.findById(id).get();
+        repositorio.delete(p);
     }
     public void updateStock(Integer id,int cantidad){
         repositorio.updateStock(id, cantidad);

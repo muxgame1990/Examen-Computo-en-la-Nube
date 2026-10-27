@@ -6,9 +6,11 @@ import mx.NovaCore.modelos.CarritoProducto;
 import mx.NovaCore.modelos.Producto;
 import mx.NovaCore.repositorio.CarritoRepositorio;
 import mx.NovaCore.repositorio.ProductoRepositorio;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+@Service
 
 public class CompraServicio {
     CarritoRepositorio carritoRepositorio;

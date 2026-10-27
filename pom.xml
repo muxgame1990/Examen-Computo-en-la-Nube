@@ -15,69 +15,38 @@
   <version>1.0.0</version>
   <name>NovaCore</name>
   <description>NovaCore</description>
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://repo1.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>primefaces</id>
-      <url>https://repository.primefaces.org</url>
-    </repository>
-  </repositories>
+
   <properties>
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-
-    <primefaces.version>14.0.0</primefaces.version>
-    <primefaces.extensions.version>14.0.0</primefaces.extensions.version>
-    <jakarta.ee.version>10.0.0</jakarta.ee.version>
+    <joinfaces.version>5.5.0</joinfaces.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.joinfaces</groupId>
+        <artifactId>joinfaces-bom</artifactId>
+        <version>${joinfaces.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>jakarta.platform</groupId>
-      <artifactId>jakarta.jakartaee-web-api</artifactId>
-      <version>${jakarta.ee.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- PrimeFaces 14 -->
-    <dependency>
-      <groupId>org.primefaces</groupId>
-      <artifactId>primefaces</artifactId>
-      <version>${primefaces.version}</version>
-      <classifier>jakarta</classifier>
-    </dependency>
-
-    <!-- PrimeFaces Extensions 14 -->
-    <dependency>
-      <groupId>org.primefaces.extensions</groupId>
-      <artifactId>primefaces-extensions</artifactId>
-      <version>${primefaces.extensions.version}</version>
-      <classifier>jakarta</classifier>
-    </dependency>
 
     <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.faces</artifactId>
-      <version>4.0.1</version>
+      <groupId>org.joinfaces</groupId>
+      <artifactId>primefaces-spring-boot-starter</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -109,15 +78,6 @@
           <compilerArgs>
             <arg>-parameters</arg>
           </compilerArgs>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.4.0</version>
-        <configuration>
-          <failOnMissingWebXml>${failOnMissingWebXml}</failOnMissingWebXml>
         </configuration>
       </plugin>
 
