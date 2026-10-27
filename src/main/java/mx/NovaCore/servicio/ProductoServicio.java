@@ -1,0 +1,45 @@
+package mx.NovaCore.servicio;
+
+import mx.NovaCore.modelos.Categoria;
+import mx.NovaCore.modelos.Producto;
+import mx.NovaCore.repositorio.ProductoRepositorio;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public class ProductoServicio {
+    ProductoRepositorio repositorio;
+
+    public List<Producto> listaProductos(){
+        return repositorio.findAll();
+    }
+
+    public List<Producto> findByCaregoria(Categoria categoria){
+        return repositorio.findByCategoria(categoria);
+    }
+
+    public List<Producto> orderByAsc(){
+        return repositorio.findAllByOrderByNombreAsc();
+    }
+    public List<Producto> orderByDesc(){
+        return repositorio.findAllByOrderByNombreDesc();
+    }
+    public void  insert(Producto producto){
+        repositorio.save(producto);
+    }
+    public void  update(Integer id,Producto producto){
+        Producto p = repositorio.findById(id).get();
+        p.setNombre(producto.getNombre());
+        p.setStock(producto.getStock());
+        p.setCategoria(producto.getCategoria());
+        p.setPrecio(producto.getPrecio());
+        p.setImagenUrl(producto.getImagenUrl());
+        repositorio.save(p);
+    }
+    public void  delete(Producto producto){
+        repositorio.delete(producto);
+    }
+    public void updateStock(Integer id,int cantidad){
+        repositorio.updateStock(id, cantidad);
+    }
+}
