@@ -1,7 +1,6 @@
-package mx.NovaCore.vista;
+package mx.NovaCore.modelos;
 
 import java.io.Serializable;
-import mx.NovaCore.modelos.Rol;
 
 public class UsuarioSesion implements Serializable {
 
