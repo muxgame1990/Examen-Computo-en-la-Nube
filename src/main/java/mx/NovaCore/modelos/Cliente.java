@@ -2,12 +2,9 @@ package mx.NovaCore.modelos;
 
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +23,6 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Rol rol = Rol.cliente;
-    @OneToMany
-    @JoinColumn(name = "id_publico_cliente")
-    private Set<Carrito> carritos = new LinkedHashSet<>();
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -44,12 +38,4 @@ public class Usuario {
 
     public Rol getRol() { return rol; }
     public void setRol(Rol rol) { this.rol = rol; }
-
-    public Set<Carrito> getCarritos() {
-        return carritos;
-    }
-
-    public void setCarritos(Set<Carrito> carritos) {
-        this.carritos = carritos;
-    }
 }

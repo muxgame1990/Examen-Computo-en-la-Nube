@@ -1,0 +1,259 @@
+ {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.admin-container {
+    min-height: 100vh;
+}
+
+.admin-header {
+    height: 156px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #cc6244;
+    color: white;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: clamp(24px, 4.5vw, 62px);
+    font-style: italic;
+    text-align: center;
+}
+
+.admin-body {
+    display: flex;
+    min-height: calc(100vh - 156px);
+}
+
+.sidebar {
+    width: 88px;
+    min-width: 88px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background: #e5d9bd;
+    box-shadow: 2px 0 6px #0003;
+    transition: width 0.3s ease, min-width 0.3s ease;
+    z-index: 2;
+}
+
+.sidebar:hover,
+.sidebar:focus-within {
+    width: 260px;
+    min-width: 260px;
+}
+
+.sidebar-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 15px;
+}
+
+.sidebar-link {
+    min-height: 105px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 20px;
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.sidebar-link:hover {
+    background: #d7c8a7;
+}
+
+.sidebar-icon {
+    min-width: 46px;
+    font-size: 42px;
+    text-align: center;
+}
+
+.sidebar-text {
+    min-width: 155px;
+    white-space: normal;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.25;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar:hover .sidebar-text,
+.sidebar:focus-within .sidebar-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.logout-form {
+    margin-top: auto;
+}
+
+.logout-link {
+    margin-bottom: 8px;
+}
+
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 45px clamp(18px, 3vw, 45px) 28px;
+}
+
+.products-section {
+    max-width: 1250px;
+    margin: auto;
+}
+
+
+.title-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 12px;
+}
+
+.title-row h2 {
+    margin: 0;
+    font-size: clamp(26px, 3vw, 46px);
+    font-style: italic;
+    text-align: center;
+}
+
+ .add-button{
+     width: 300px !important;
+     height: 50px !important;
+     background: #2fc36e !important;
+     border-color: #246b43 !important;
+ }
+
+ .add-button .ui-button-icon {
+     font-size: 500px;
+     font-weight: bold;
+     position: relative;
+     top: -2px;
+ }
+
+
+.search-panel,
+.table-panel {
+    margin-bottom: 30px;
+    border: none !important;
+    border-radius: 10px;
+    box-shadow: 0 3px 5px #0003;
+}
+
+.search-panel .ui-panel-content {
+    padding: 12px 25px;
+}
+
+.search-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 180px;
+    border-radius: 10px !important;
+}
+
+.table-panel .ui-panel-content {
+    padding: 18px 20px;
+}
+
+/* Encabezado y acciones de la tabla */
+.products-table .ui-datatable-thead > tr > th {
+    background: #741414 !important;
+    color: white !important;
+}
+
+.products-table .edit-button {
+    color: #a7c0f5 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.products-table .delete-button {
+    color: #f32c24 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.actions-column {
+    white-space: nowrap;
+}
+
+.product-name {
+    font-weight: 600;
+}
+
+
+
+.product-form input,
+.product-form textarea {
+    width: 100%;
+}
+
+.save-button {
+    margin-top: 12px;
+    background: #2fc36e !important;
+}
+
+@media (max-width: 800px) {
+    .admin-header {
+        height: 110px;
+    }
+
+    .admin-body {
+        min-height: calc(100vh - 110px);
+    }
+
+    .sidebar {
+        width: 65px;
+        min-width: 65px;
+    }
+
+    .sidebar:hover,
+    .sidebar:focus-within {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .main-content {
+        padding: 25px 12px;
+    }
+
+    .title-row {
+        grid-template-columns: 1fr;
+    }
+
+    .title-row h2 {
+        text-align: left;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .sidebar-text {
+        transition: none;
+    }
+}
