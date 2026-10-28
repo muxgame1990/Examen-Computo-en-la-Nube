@@ -1,11 +1,7 @@
+
 package mx.NovaCore.modelos;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "productos")
@@ -16,65 +12,78 @@ public class Producto {
     @Column(name = "producto_id")
     private Integer id;
 
-    @Column(nullable = false, length = 80)
+    @Column(name = "nombreProducto", nullable = false, length = 45)
     private String nombre;
 
-    @Column(nullable = false, length = 500)
+    @Column(name = "descripcion", nullable = false, length = 100)
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(name = "precio", nullable = false)
     private Double precio;
 
-    @Column(nullable = false)
+    @Column(name = "stock", nullable = false)
     private Integer stock;
 
     @Convert(converter = CategoriaConverter.class)
-    @Column(nullable = false)
+    @Column(name = "categoria", nullable = false)
     private Categoria categoria;
 
     @Column(name = "imagenProducto", length = 255)
     private String imagenUrl;
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "nombreProducto", nullable = false, length = 45)
-    private String nombreProducto;
-    @OneToMany(mappedBy = "producto")
-    private Set<CarritoProducto> carritoProductos = new LinkedHashSet<>();
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
-
-    public Integer getStock() { return stock; }
-    public void setStock(Integer stock) { this.stock = stock; }
-
-    public Categoria getCategoria() { return categoria; }
-    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
-
-    public String getImagenUrl() { return imagenUrl; }
-    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
-
-    public String getNombreProducto() {
-        return nombreProducto;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Set<CarritoProducto> getCarritoProductos() {
-        return carritoProductos;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCarritoProductos(Set<CarritoProducto> carritoProductos) {
-        this.carritoProductos = carritoProductos;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 }

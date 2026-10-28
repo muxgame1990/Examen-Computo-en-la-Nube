@@ -15,4 +15,5 @@ public class CategoriaConverter implements AttributeConverter<Categoria, String>
     public Categoria convertToEntityAttribute(String valor) {
         return Categoria.desdeBd(valor);
     }
+
 }
