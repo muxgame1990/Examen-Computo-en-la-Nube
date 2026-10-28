@@ -4,13 +4,21 @@ import mx.NovaCore.modelos.Categoria;
 import mx.NovaCore.modelos.Producto;
 import mx.NovaCore.repositorio.ProductoRepositorio;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductoServicio {
-    ProductoRepositorio repositorio;
+   private  ProductoRepositorio repositorio;
+
+   public ProductoServicio(ProductoRepositorio repositorio){
+       this.repositorio = repositorio;
+   }
+
 
     public List<Producto> listaProductos(){
+        System.out.println("Llegue");
         return repositorio.findAll();
     }
 

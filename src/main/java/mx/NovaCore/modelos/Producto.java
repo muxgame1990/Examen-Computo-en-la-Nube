@@ -1,3 +1,4 @@
+
 package mx.NovaCore.modelos;
 
 import jakarta.persistence.*;
@@ -11,43 +12,78 @@ public class Producto {
     @Column(name = "producto_id")
     private Integer id;
 
-    @Column(nullable = false, length = 80)
+    @Column(name = "nombreProducto", nullable = false, length = 45)
     private String nombre;
 
-    @Column(nullable = false, length = 500)
+    @Column(name = "descripcion", nullable = false, length = 100)
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(name = "precio", nullable = false)
     private Double precio;
 
-    @Column(nullable = false)
+    @Column(name = "stock", nullable = false)
     private Integer stock;
 
     @Convert(converter = CategoriaConverter.class)
-    @Column(nullable = false)
+    @Column(name = "categoria", nullable = false)
     private Categoria categoria;
 
     @Column(name = "imagenProducto", length = 255)
     private String imagenUrl;
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public Integer getStock() { return stock; }
-    public void setStock(Integer stock) { this.stock = stock; }
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-    public Categoria getCategoria() { return categoria; }
-    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-    public String getImagenUrl() { return imagenUrl; }
-    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
 }

@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>AVANTI SHOP - Administrador</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="admin-panel.css"/>
+</h:head>
+<h:body>
+
+    <div class="admin-container">
+
+
+        <header class="admin-header">
+            <h1>AVANTI SHOP - ADMINISTRADOR</h1>
+        </header>
+
+        <div class="admin-body">
+
+            <aside class="sidebar">
+
+                <div class="sidebar-options">
+
+                    <h:link outcome="admin-panel"
+                            styleClass="sidebar-link active-link">
+
+                        <i class="pi pi-file-edit sidebar-icon"></i>
+
+                        <span class="sidebar-text">
+                            Gestión de productos
+                        </span>
+
+                    </h:link>
+
+                    <h:link outcome="flujo-inventario"
+                            styleClass="sidebar-link">
+
+                        <i class="pi pi-chart-bar sidebar-icon"></i>
+
+                        <span class="sidebar-text">
+                            Flujo de inventario
+                        </span>
+
+                    </h:link>
+
+                </div>
+
+                <h:form id="formCerrarSesion"
+                        styleClass="logout-form">
+
+                    <p:commandLink
+                            action="#{adminPanelBean.cerrarSesion}"
+                            styleClass="sidebar-link logout-link"
+                            process="@this">
+
+                        <i class="pi pi-sign-out sidebar-icon"></i>
+
+                        <span class="sidebar-text">
+                            Cerrar sesión
+                        </span>
+
+                    </p:commandLink>
+
+                </h:form>
+
+            </aside>
+
+            <main class="main-content">
+
+                <section class="products-section">
+
+                    <h:form id="formProductos">
+
+                        <div class="title-row">
+
+                            <h2>Lista de productos</h2>
+
+                            <p:commandButton
+                                    type="button"
+                                    icon="pi pi-plus"
+                                    title="Agregar producto"
+                                    styleClass="add-button"/>
+
+
+                        </div>
+
+
+                        <p:growl id="mensajes"
+                                 showDetail="true"
+                                 life="3500"/>
+
+                        <p:panel styleClass="search-panel">
+
+                            <div class="search-controls">
+
+                                <p:inputText
+                                        id="busqueda"
+                                        value="#{adminPanelBean.busqueda}"
+                                        placeholder="Ingrese nombre o ID..."
+                                        styleClass="search-input"/>
+
+                                <p:commandButton
+                                        value="Buscar"
+                                        icon="pi pi-search"
+                                        action="#{adminPanelBean.buscarProductos}"
+                                        process="@this busqueda"
+                                        update="tablaProductos mensajes"
+                                        styleClass="search-button"/>
+
+                               <p:selectOneMenu id="productosfilter" value="#{adminPanelBean.producto.categoria}">
+                                    <f:selectItem itemLabel="Tipo de producto" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{adminPanelBean.categorias}" var="cat"
+                                                   itemLabel="#{cat.etiqueta}" itemValue="#{cat}"/>
+                               </p:selectOneMenu>
+
+
+
+
+                            </div>
+
+                        </p:panel>
+
+                        <!-- aqui tabla de producto-->
+                        <p:panel styleClass="table-panel">
+
+                            <p:dataTable
+                                    id="tablaProductos"
+                                    value="#{adminPanelBean.listaProductos}"
+                                    var="producto"
+                                    rowKey="#{producto.id}"
+                                    emptyMessage="No hay productos registrados"
+                                    reflow="true"
+                                    styleClass="products-table">
+
+                                <p:column headerText="ID">
+
+                                    <h:outputText value="#{producto.id}"/>
+
+                                </p:column>
+
+                                <p:column headerText="Nombre">
+
+                                    <h:outputText
+                                            value="#{producto.nombre}"
+                                            styleClass="product-name"/>
+
+                                </p:column>
+
+                                <p:column headerText="Descripción">
+
+                                    <h:outputText
+                                            value="#{producto.descripcion}"/>
+
+                                </p:column>
+
+                                <p:column headerText="Precio">
+
+                                    <h:outputText value="#{producto.precio}">
+
+                                        <f:convertNumber
+                                                type="currency"
+                                                currencySymbol="$"
+                                                minFractionDigits="2"
+                                                maxFractionDigits="2"/>
+
+                                    </h:outputText>
+
+                                </p:column>
+
+                                <p:column headerText="Cantidad Disponible">
+
+                                    <h:outputText value="#{producto.stock}"/>
+
+                                </p:column>
+
+                                <p:column headerText="Categoría">
+
+                                    <h:outputText
+                                            value="#{producto.categoria}"/>
+
+                                </p:column>
+
+                                <p:column headerText="Acciones"
+                                          styleClass="actions-column">
+
+
+                                    <p:commandButton
+                                            type="button"
+                                            icon="pi pi-pencil"
+                                            title="Editar producto"
+                                            styleClass="edit-button"/>
+
+
+                                    <p:commandButton
+                                            type="button"
+                                            icon="pi pi-trash"
+                                            title="Eliminar producto"
+                                            styleClass="delete-button"/>
+
+                                </p:column>
+
+                            </p:dataTable>
+                            <!--Fin de la tabla  -->
+                        </p:panel>
+
+                    </h:form>
+
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+</h:body>
+</html>
