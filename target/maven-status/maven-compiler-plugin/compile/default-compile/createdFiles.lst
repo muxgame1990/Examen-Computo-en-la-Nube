@@ -10,8 +10,11 @@ mx\NovaCore\controlador\InicioController.class
 mx\NovaCore\servicio\CompraServicio.class
 mx\NovaCore\modelos\Categoria.class
 mx\NovaCore\modelos\Cliente.class
+mx\NovaCore\servicio\AlmacenamientoImagenServicio.class
+mx\NovaCore\servicio\LocalImagenServicio.class
 mx\NovaCore\modelos\CarritoProductoId.class
 mx\NovaCore\repositorio\CarritoRepositorio.class
+mx\NovaCore\vista\Frijol\AgregarProductoBean.class
 mx\NovaCore\modelos\CategoriaConverter.class
 mx\NovaCore\servicio\CarritoServicio.class
 mx\NovaCore\repositorio\ClienteRepositorio.class
@@ -21,3 +24,4 @@ mx\NovaCore\servicio\LineaCarrito.class
 mx\NovaCore\servicio\ProductoServicio.class
 mx\NovaCore\modelos\ProductoNova.class
 mx\NovaCore\modelos\CarritoProducto.class
+mx\NovaCore\web\ImagenServlet.class

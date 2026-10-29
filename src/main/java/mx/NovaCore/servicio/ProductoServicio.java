@@ -37,6 +37,7 @@ public class ProductoServicio {
     }
     public void  update(Integer id,Producto producto){
         Producto p = repositorio.findById(id).get();
+        p.setIdentificador(producto.getIdentificador());
         p.setNombre(producto.getNombre());
         p.setStock(producto.getStock());
         p.setCategoria(producto.getCategoria());

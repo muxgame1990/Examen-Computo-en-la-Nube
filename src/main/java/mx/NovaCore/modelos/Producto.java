@@ -12,6 +12,9 @@ public class Producto {
     @Column(name = "producto_id")
     private Integer id;
 
+    @Column(name = "identificador", nullable = false, length = 100)
+    private String identificador;
+
     @Column(name = "nombreProducto", nullable = false, length = 45)
     private String nombre;
 
@@ -85,5 +88,13 @@ public class Producto {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 }
