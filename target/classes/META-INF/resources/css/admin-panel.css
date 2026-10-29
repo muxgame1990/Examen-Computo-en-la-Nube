@@ -180,7 +180,6 @@ html, body {
     padding: 18px 20px;
 }
 
-/* Encabezado y acciones de la tabla */
 .products-table .ui-datatable-thead > tr > th {
     background: #741414 !important;
     color: white !important;
@@ -250,6 +249,152 @@ html, body {
         text-align: left;
     }
 }
+
+
+ /* Fondo y contenedor del diálogo */
+ .modal-producto-cafe {
+     border: 1px solid #ddc6ae !important;
+     border-radius: 12px !important;
+     overflow: hidden;
+     box-shadow: 0 8px 28px rgba(75, 48, 30, 0.16) !important;
+ }
+
+ /* Encabezado */
+ .modal-producto-cafe .ui-dialog-titlebar {
+     background: #ead8c4 !important;
+     color: #563d2e !important;
+     border: none !important;
+     padding: 14px 18px !important;
+ }
+
+ /* Área de contenido */
+ .modal-producto-cafe .ui-dialog-content {
+     background: #faf5ef !important;
+     color: #4e392b !important;
+     padding: 14px 20px 16px !important;
+     max-height: 78vh;
+     overflow-y: auto;
+ }
+
+ /* Reduce espacios entre los campos */
+ .modal-producto-cafe .formulario-producto {
+     margin: 0 !important;
+     padding: 0 !important;
+ }
+
+ .modal-producto-cafe .formulario-producto .ui-panelgrid-cell {
+     padding: 4px 0 !important;
+     border: none !important;
+ }
+
+ /* Etiquetas y campos */
+ .modal-producto-cafe .campo-producto > .ui-outputlabel {
+     display: block;
+     margin-bottom: 4px;
+     color: #634832 !important;
+     font-weight: 600;
+ }
+
+ .modal-producto-cafe .campo-producto .ui-inputfield,
+ .modal-producto-cafe .campo-producto .ui-selectonemenu {
+     border-radius: 6px !important;
+ }
+
+ /* Textarea y campos al ancho disponible */
+ .modal-producto-cafe .campo-producto textarea,
+ .modal-producto-cafe .campo-producto input {
+     box-sizing: border-box;
+ }
+
+ /* Espaciado de la carga de imagen */
+ .modal-producto-cafe .ui-fileupload {
+     margin-top: 4px;
+ }
+
+ .modal-producto-cafe .ui-fileupload-buttonbar {
+     padding: 6px !important;
+     background: #f1e5d8 !important;
+     border-color: #ddc6ae !important;
+ }
+
+ .modal-producto-cafe .ui-fileupload-content {
+     padding: 6px !important;
+     background: #fffaf5 !important;
+     border-color: #ddc6ae !important;
+ }
+
+ /* Separador */
+ .modal-producto-cafe .separador-producto {
+     border-color: #e4d2bf !important;
+     margin: 10px 0 12px !important;
+ }
+
+ /* Botones: alineación y visibilidad */
+ .modal-producto-cafe .acciones-producto {
+     display: flex !important;
+     justify-content: flex-end;
+     align-items: center;
+     gap: 10px;
+     width: 100%;
+     padding-top: 2px;
+ }
+
+ /* Evita que los botones se encojan */
+ .modal-producto-cafe .acciones-producto .ui-button {
+     display: inline-flex !important;
+     align-items: center;
+     justify-content: center;
+     flex: 0 0 auto;
+     min-height: 38px;
+     border-radius: 7px !important;
+     padding: 8px 14px !important;
+     margin: 0 !important;
+ }
+
+ /* Botón Cancelar */
+ .modal-producto-cafe .boton-cancelar {
+     background: #eee4da !important;
+     border: 1px solid #d6c2ad !important;
+     color: #634832 !important;
+ }
+
+ /* Botón Agregar */
+ .modal-producto-cafe .boton-agregar {
+     background: #896344 !important;
+     border: 1px solid #896344 !important;
+     color: #ffffff !important;
+ }
+
+ /* Botón de seleccionar imagen */
+ .imagen-producto .ui-fileupload-choose {
+     background: #896344 !important;
+     border: 1px solid #896344 !important;
+     color: #ffffff !important;
+ }
+
+ /* Efecto al pasar el cursor */
+ .imagen-producto .ui-fileupload-choose:hover {
+     background: #725037 !important;
+     border-color: #725037 !important;
+ }
+
+ /* Icono del botón */
+ .imagen-producto .ui-fileupload-choose .ui-icon,
+ .imagen-producto .ui-fileupload-choose .ui-button-icon-left,
+ .imagen-producto .ui-fileupload-choose .ui-button-icon {
+     color: #ffffff !important;
+ }
+
+
+ .modal-producto-cafe .boton-cancelar:hover {
+     background: #e4d5c6 !important;
+ }
+
+ .modal-producto-cafe .boton-agregar:hover {
+     background: #725037 !important;
+ }
+
+
 
 @media (prefers-reduced-motion: reduce) {
     .sidebar,

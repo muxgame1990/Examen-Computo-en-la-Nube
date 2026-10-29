@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
     <title>AVANTI SHOP - Administrador</title>
@@ -87,7 +88,8 @@
                                     type="button"
                                     icon="pi pi-plus"
                                     title="Agregar producto"
-                                    styleClass="add-button"/>
+                                    styleClass="add-button"
+                                    onclick="PF('dialogAgregarProducto').show()"/>
 
 
                         </div>
@@ -116,7 +118,7 @@
                                         styleClass="search-button"/>
 
                                <p:selectOneMenu id="productosfilter" value="#{adminPanelBean.producto.categoria}">
-                                    <f:selectItem itemLabel="Tipo de producto" itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Todos los productos" itemValue="#{null}" noSelectionOption="true"/>
                                     <f:selectItems value="#{adminPanelBean.categorias}" var="cat"
                                                    itemLabel="#{cat.etiqueta}" itemValue="#{cat}"/>
                                </p:selectOneMenu>
@@ -220,6 +222,6 @@
         </div>
 
     </div>
-
+    <ui:include src="agregar-producto.xhtml"/>
 </h:body>
 </html>
