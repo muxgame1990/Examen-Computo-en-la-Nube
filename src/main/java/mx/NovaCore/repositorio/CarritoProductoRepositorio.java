@@ -15,6 +15,6 @@ public interface CarritoProductoRepositorio extends JpaRepository<CarritoProduct
 
     List<CarritoProducto> findByCarrito_Id(Integer id);
 
-    @Query("SELECT SUM (cp.cantidad * cp.precioUnitario) FROM CarritoProducto cp WHERE cp.carrito.id = : carritoId")
-    Double getTotal(@Param("carritoID") Integer carritoId);
+    @Query("SELECT SUM (cp.cantidad * cp.precioUnitario) FROM CarritoProducto cp WHERE cp.carrito.id = :carritoId")
+    Double getTotal(@Param("carritoId") Integer carritoId);
 }

@@ -3,8 +3,10 @@ package mx.NovaCore.servicio;
 import mx.NovaCore.modelos.Cliente;
 import mx.NovaCore.modelos.Rol;
 import mx.NovaCore.repositorio.ClienteRepositorio;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+@Service
 
 public class ClienteServicio {
     ClienteRepositorio clienteRepositorio;
