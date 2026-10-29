@@ -98,7 +98,14 @@
                         <p:growl id="mensajes"
                                  showDetail="true"
                                  life="3500"/>
-
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true"
+                                         styleClass="modal-producto-cafe">
+                            
+                            <p:commandButton value="Cancelar" type="button"
+                                             styleClass="ui-confirmdialog-no boton-cancelar" icon="pi pi-times"/>
+                                         <p:commandButton value="Eliminar" type="button"
+                                                          styleClass="ui-confirmdialog-yes boton-eliminar" icon="pi pi-check"/>
+                        </p:confirmDialog>
                         <p:panel styleClass="search-panel">
 
                             <div class="search-controls">
@@ -113,14 +120,18 @@
                                         value="Buscar"
                                         icon="pi pi-search"
                                         action="#{adminPanelBean.buscarProductos}"
-                                        process="@this busqueda"
+                                        process="@this busqueda productosFilter"
                                         update="tablaProductos mensajes"
                                         styleClass="search-button"/>
 
-                               <p:selectOneMenu id="productosfilter" value="#{adminPanelBean.producto.categoria}">
+                               <p:selectOneMenu id="productosfilter" value="#{adminPanelBean.filtroPorCategoria}">
                                     <f:selectItem itemLabel="Todos los productos" itemValue="#{null}" noSelectionOption="true"/>
                                     <f:selectItems value="#{adminPanelBean.categorias}" var="cat"
                                                    itemLabel="#{cat.etiqueta}" itemValue="#{cat}"/>
+                                   <p:ajax event="change"
+                                           listener="#{adminPanelBean.buscarProductos}"
+                                           process="@this busqueda"
+                                           update="tablaProductos"/>
                                </p:selectOneMenu>
 
 
@@ -202,10 +213,17 @@
 
 
                                     <p:commandButton
-                                            type="button"
                                             icon="pi pi-trash"
                                             title="Eliminar producto"
-                                            styleClass="delete-button"/>
+                                            styleClass="delete-button"
+                                            action="#{adminPanelBean.eliminarProducto(producto)}"
+                                            process="@this"
+                                            update=":formProductos:tablaProductos :formProductos:mensajes">
+                                        <p:confirm header="Eliminar Producto"
+                                                   message="¿Esta seguro de eliminar #{producto.nombre}"
+                                                   icon="pi pi-exclamation-triangle"/>
+                                    </p:commandButton>
+
 
                                 </p:column>
 

@@ -385,6 +385,35 @@ html, body {
      color: #ffffff !important;
  }
 
+ .modal-producto-cafe .ui-confirm-dialog-message {
+     color: #4e392b !important;
+     font-size: 15px;
+ }
+
+ .modal-producto-cafe .ui-confirm-dialog-severity {
+     color: #896344 !important;
+ }
+
+ .modal-producto-cafe .ui-dialog-buttonpane {
+     display: flex !important;
+     justify-content: flex-end;
+     align-items: center;
+     gap: 10px;
+     background: #faf5ef !important;
+     border-top: 1px solid #e4d2bf !important;
+     padding: 12px 20px !important;
+ }
+
+ .modal-producto-cafe .ui-dialog-buttonpane .ui-button {
+     display: inline-flex !important;
+     align-items: center;
+     justify-content: center;
+     min-height: 38px;
+     border-radius: 7px !important;
+     padding: 8px 14px !important;
+     margin: 0 !important;
+ }
+
 
  .modal-producto-cafe .boton-cancelar:hover {
      background: #e4d5c6 !important;
@@ -394,6 +423,16 @@ html, body {
      background: #725037 !important;
  }
 
+ .modal-producto-cafe .boton-eliminar {
+     background: #741414 !important;
+     border: 1px solid #741414 !important;
+     color: #ffffff !important;
+ }
+
+ .modal-producto-cafe .boton-eliminar:hover {
+     background: #5a0f0f !important;
+     border-color: #5a0f0f !important;
+ }
 
 
 @media (prefers-reduced-motion: reduce) {

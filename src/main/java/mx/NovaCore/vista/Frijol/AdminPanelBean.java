@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class AdminPanelBean implements Serializable {
     private Producto productoSeleccionado;
     private String busqueda;
     private Producto producto;
+    private Categoria filtroPorCategoria;
 
     @Inject
     private AlmacenamientoImagenServicio almacenamientoImagenServicio;
@@ -84,15 +86,31 @@ public class AdminPanelBean implements Serializable {
     }
 
     public void buscarProductos() {
-
+        listaProductos = ps.Busqueda(busqueda,filtroPorCategoria);
     }
 
     public void mostrarTodos() {
-
+        busqueda = null;
+        filtroPorCategoria = null;
+        cargarLista();
     }
 
     public void eliminarProducto(Producto producto) {
-        ps.delete(producto.getId());
+       try {
+           ps.delete(producto.getId());
+           buscarProductos();
+           FacesContext.getCurrentInstance().addMessage(
+                   null, new jakarta.faces.application.FacesMessage(
+                           FacesMessage.SEVERITY_INFO, "Producto Eliminado", producto.getNombre() + " Ha sido eliminado correctamente"
+                   )
+           );
+       }catch (RuntimeException e){
+           FacesContext.getCurrentInstance().addMessage(
+                   null, new jakarta.faces.application.FacesMessage(
+                           FacesMessage.SEVERITY_ERROR, "No se logro eliminar", e.getMessage()
+                   )
+           );
+       }
     }
 
     public void editarProducto(Producto producto) {
@@ -152,5 +170,12 @@ public class AdminPanelBean implements Serializable {
 
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
+    }
+
+    public Categoria getFiltroPorCategoria() {
+        return filtroPorCategoria;
+    }
+    public void setFiltroPorCategoria(Categoria filtroPorCategoria) {
+        this.filtroPorCategoria = filtroPorCategoria;
     }
 }
