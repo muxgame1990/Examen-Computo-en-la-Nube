@@ -60,6 +60,8 @@ CREATE TABLE IF NOT EXISTS `computo_examen`.`productos` (
   `stock` INT(11) NOT NULL,
   `categoria` ENUM('perifericos', 'tarjetas de video', 'procesadores', 'memoria ram', 'accesorios') NOT NULL,
   `imagenProducto` VARCHAR(255) NOT NULL,
+  `descripcion` VARCHAR(100) NOT NULL,
+  `identificador` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`producto_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
