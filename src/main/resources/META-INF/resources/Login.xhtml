@@ -55,12 +55,86 @@
                                  styleClass="login-boton"/>
 
                 <p:defaultCommand target="btnEntrar"/>
+                <p class="login-registro">
+                    ¿No tienes cuenta?
+                    <p:commandLink value="Regístrate"
+                                   process="@this"
+                                   update=":formRegistro"
+                                   oncomplete="PF('dlgRegistro').show()">
+                        <p:resetInput target=":formRegistro"/>
+                    </p:commandLink>
+                </p>
 
             </h:form>
 
         </div>
 
     </main>
+    <p:dialog widgetVar="dlgRegistro"
+              header="Crear cuenta"
+              modal="true"
+              resizable="false"
+              draggable="false"
+              responsive="true"
+              width="420"
+              styleClass="registro-dialogo">
 
+        <h:form id="formRegistro">
+
+            <p:messages id="mensajesRegistro" showDetail="true" closable="true"/>
+
+            <div class="login-campo">
+                <p:outputLabel for="nuevoNombre" value="Nombre"/>
+                <p:inputText id="nuevoNombre"
+                             value="#{loginBean.nuevoNombre}"
+                             placeholder="Ingresa tu nombre"
+                             maxlength="80"
+                             required="true"
+                             requiredMessage="Escribe tu nombre."/>
+            </div>
+
+            <div class="login-campo">
+                <p:outputLabel for="nuevoUsuario" value="Usuario"/>
+                <p:inputText id="nuevoUsuario"
+                             value="#{loginBean.nuevoUsuario}"
+                             placeholder="Elige un nombre de usuario"
+                             maxlength="45"
+                             required="true"
+                             requiredMessage="Escribe un usuario."/>
+            </div>
+
+            <div class="login-campo">
+                <p:outputLabel for="nuevoPassword" value="Contraseña"/>
+                <p:password id="nuevoPassword"
+                            value="#{loginBean.nuevoPassword}"
+                            placeholder="Crea una contraseña"
+                            maxlength="45"
+                            toggleMask="true"
+                            feedback="false"
+                            required="true"
+                            requiredMessage="Escribe una contraseña."/>
+            </div>
+
+            <div class="login-campo">
+                <p:outputLabel for="confirmarPassword" value="Confirmar contraseña"/>
+                <p:password id="confirmarPassword"
+                            value="#{loginBean.confirmPassword}"
+                            placeholder="Repite la contraseña"
+                            maxlength="45"
+                            toggleMask="true"
+                            feedback="false"
+                            required="true"
+                            requiredMessage="Confirma tu contraseña."/>
+            </div>
+
+            <p:commandButton value="Crear cuenta"
+                             action="#{loginBean.Registrar()}"
+                             process="@form"
+                             update="mensajesRegistro"
+                             oncomplete="if (args.registrado) PF('dlgRegistro').hide()"
+                             styleClass="login-boton"/>
+
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

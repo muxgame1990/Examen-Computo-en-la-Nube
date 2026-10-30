@@ -152,7 +152,9 @@
                                         action="#{flujoInventarioBean.prepararEntrada}"
                                         process="@this"
                                         update=":dialogMovimiento"
-                                        oncomplete="PF('dialogMovimiento').show()"/>
+                                        oncomplete="PF('dialogMovimiento').show()">
+                                    <p:resetInput target=":formMovimiento"/>
+                                </p:commandButton>
 
                                 <p:commandButton
                                         icon="pi pi-plus"
@@ -161,8 +163,9 @@
                                         action="#{flujoInventarioBean.prepararSalida}"
                                         process="@this"
                                         update=":dialogMovimiento"
-                                        oncomplete="PF('dialogMovimiento').show()"/>
-
+                                        oncomplete="PF('dialogMovimiento').show()">
+                                    <p:resetInput target=":formMovimiento"/>
+                                </p:commandButton>
                             </div>
 
                         </div>
@@ -219,7 +222,9 @@
                                             action="#{flujoInventarioBean.prepararEdicion(mov)}"
                                             process="@this"
                                             update=":dialogMovimiento"
-                                            oncomplete="PF('dialogMovimiento').show()"/>
+                                            oncomplete="PF('dialogMovimiento').show()">
+                                        <p:resetInput target=":formMovimiento"/>
+                                    </p:commandButton>
 
                                     <p:commandButton
                                             icon="pi pi-trash"
@@ -262,7 +267,6 @@
               resizable="false"
               draggable="false"
               width="440"
-              appendTo="@(body)"
               styleClass="modal-producto-cafe">
 
         <h:form id="formMovimiento">
@@ -318,6 +322,7 @@
                             value="#{flujoInventarioBean.cantidad}"
                             minValue="1"
                             decimalPlaces="0"
+                            decimalSeparator="."
                             thousandSeparator=","
                             required="true"
                             requiredMessage="Ingresa la cantidad."/>

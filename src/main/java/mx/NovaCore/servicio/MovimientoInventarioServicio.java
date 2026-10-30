@@ -54,7 +54,7 @@ public class MovimientoInventarioServicio {
         validarCantidad(cantidad);
 
         Producto producto = productoRepositorio.findById(productoId).orElseThrow(() -> new IllegalArgumentException("El Producto seleccionado ya no existe"));
-        ajustarStock(producto, tipo.getSigno() + cantidad);
+        ajustarStock(producto, tipo.getSigno() * cantidad);
         repositorio.save(new MovimientoInventario(producto, tipo, cantidad));
     }
 

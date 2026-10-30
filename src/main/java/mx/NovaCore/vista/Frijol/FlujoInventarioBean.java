@@ -25,7 +25,7 @@ import java.util.List;
 @ViewScoped
 public class FlujoInventarioBean implements Serializable {
 
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @Inject
     private MovimientoInventarioServicio movimientoInventarioServicio;
@@ -67,6 +67,10 @@ public class FlujoInventarioBean implements Serializable {
         productoId = null;
         cantidad = null;
         productosDisponibles = productito.listaProductos();
+    }
+
+    public void prepararSalida(){
+        prepararNuevo(TipoMovimiento.SALIDA);
     }
 
     public void prepararEdicion(MovimientoInventario movimiento) {
@@ -111,7 +115,7 @@ public class FlujoInventarioBean implements Serializable {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
         try {
-            ec.redirect(ec.getRequestContextPath() + "/");
+            ec.redirect(ec.getRequestContextPath() + "/login.xhtml");
         } catch (IOException e) {
             mensaje(FacesMessage.SEVERITY_ERROR, "No se pudo cerrar la sesión Gomene", e.getMessage());
         }
