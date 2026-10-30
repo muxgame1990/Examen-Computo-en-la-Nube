@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+import org.springframework.data.jpa.repository.Query;
 public interface ProductoRepositorio extends JpaRepository<Producto, Integer> {
     List<Producto> findAllByOrderByNombreAsc();
 
@@ -26,5 +26,13 @@ public interface ProductoRepositorio extends JpaRepository<Producto, Integer> {
     @Modifying
     @Query("UPDATE Producto p SET p.stock = p.stock - :cantidad WHERE p.id = :id AND p.stock >= :cantidad")
     int updateStock(@Param("id") Integer id, @Param("cantidad") int cantidad);
+
+    @Query(value = """
+    SELECT AUTO_INCREMENT
+    FROM information_schema.TABLES
+    WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'productos'
+    """, nativeQuery = true)
+    Long obtenerSiguienteId();
 
 }

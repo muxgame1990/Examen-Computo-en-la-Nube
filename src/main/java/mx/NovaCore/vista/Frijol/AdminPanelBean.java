@@ -5,16 +5,12 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
 import mx.NovaCore.modelos.Categoria;
-import mx.NovaCore.modelos.CategoriaConverter;
 import mx.NovaCore.modelos.Producto;
 import mx.NovaCore.servicio.ProductoServicio;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.application.FacesMessage;
 import org.primefaces.event.FileUploadEvent;
@@ -32,13 +28,11 @@ public class AdminPanelBean implements Serializable {
     private String busqueda;
     private Producto producto;
     private Categoria filtroPorCategoria;
-
     @Inject
     private AlmacenamientoImagenServicio almacenamientoImagenServicio;
-
     private String urlImagen;
-
-
+    private String urlImagenDefinitiva;
+    private String idTemporal;
     @PostConstruct
     public void init() {
 
@@ -53,12 +47,10 @@ public class AdminPanelBean implements Serializable {
     public void prepararNuevoProducto() { }
 
     public void subirImagen(FileUploadEvent event) {
-
         try {
             UploadedFile archivo = event.getFile();
 
             String clave = almacenamientoImagenServicio.guardar(archivo);
-
             String contexto = FacesContext.getCurrentInstance()
                     .getExternalContext()
                     .getRequestContextPath();
@@ -118,9 +110,29 @@ public class AdminPanelBean implements Serializable {
     }
 
     public void agregarProducto() {
+        try {
+            if (producto.getCategoria() == null) {
+                throw new IllegalArgumentException("Debes seleccionar una categoría primero");
+            }
 
+            producto.setImagenUrl(urlImagen);
 
+            producto.setIdentificador(idTemporal);
 
+            ps.insert(producto);
+            cargarLista();
+
+            producto = new Producto();
+            idTemporal = null;
+            urlImagen = null;
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto registrado", "El producto se registro correctamente."));
+
+        } catch (RuntimeException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al registrar", "No se pudo registrar el product"
+                    )
+            );
+        }
     }
 
     public String cerrarSesion() {
@@ -132,6 +144,13 @@ public class AdminPanelBean implements Serializable {
         return Categoria.values();
     }
 
+    public void actualizarIdentificadorProvisional() {
+        if (producto.getCategoria() == null) {
+            idTemporal = null;
+            return;
+        }
+        idTemporal = ps.generarIdentificadorProvisional(producto.getCategoria());
+    }
 
 
     public List<Producto> getListaProductos() {
@@ -169,6 +188,7 @@ public class AdminPanelBean implements Serializable {
         return urlImagen;
     }
 
+
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
     }
@@ -178,5 +198,13 @@ public class AdminPanelBean implements Serializable {
     }
     public void setFiltroPorCategoria(Categoria filtroPorCategoria) {
         this.filtroPorCategoria = filtroPorCategoria;
+    }
+
+    public String getIdTemporal() {
+        return idTemporal;
+    }
+
+    public void setIdTemporal(String idTemporal) {
+        this.idTemporal = idTemporal;
     }
 }

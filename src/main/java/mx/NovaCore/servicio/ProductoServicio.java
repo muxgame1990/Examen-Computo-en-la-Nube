@@ -7,8 +7,12 @@ import mx.NovaCore.repositorio.ProductoRepositorio;
 import mx.NovaCore.repositorio.CarritoRepositorio;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Locale;
 
 import java.util.List;
+import java.util.UUID;
+
 @Service
 public class ProductoServicio {
    private  ProductoRepositorio repositorio;
@@ -53,12 +57,27 @@ public class ProductoServicio {
     public List<Producto> orderByDesc(){
         return repositorio.findAllByOrderByNombreDesc();
     }
-    public void  insert(Producto producto){
-        repositorio.save(producto);
+    @Transactional
+    public void insert(Producto producto) {
+
+        String temporal = "TMP-" + UUID.randomUUID();
+
+        producto.setIdentificador(temporal);
+
+        Producto productoGuardado = repositorio.saveAndFlush(producto);
+
+        String identificadorFinal = String.format(
+                Locale.ROOT,
+                "%s - %03d",
+                productoGuardado.getCategoria().getPrefijo(),
+                productoGuardado.getId()
+        );
+
+        productoGuardado.setIdentificador(identificadorFinal);
+        repositorio.save(productoGuardado);
     }
     public void  update(Integer id,Producto producto){
         Producto p = repositorio.findById(id).get();
-        p.setIdentificador(producto.getIdentificador());
         p.setNombre(producto.getNombre());
         p.setStock(producto.getStock());
         p.setCategoria(producto.getCategoria());
@@ -70,6 +89,20 @@ public class ProductoServicio {
         Producto p = repositorio.findById(id).orElse(null);
         repositorio.delete(p);
     }
+
+    public String generarIdentificadorProvisional(Categoria categoria) {
+        if (categoria == null) {
+            return null;
+        }
+        Long siguienteId = repositorio.obtenerSiguienteId();
+
+        if (siguienteId == null) {
+            throw new IllegalStateException("No se pudo obtener el siguiente ID de producto.");
+        }
+
+        return String.format(Locale.ROOT, "%s - %03d", categoria.getPrefijo(), siguienteId);
+    }
+
     public void updateStock(Integer id,int cantidad){
         repositorio.updateStock(id, cantidad);
     }

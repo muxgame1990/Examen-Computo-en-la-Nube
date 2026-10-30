@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/db/NOBORRAR.sql" value="ec6c65e3-1a51-49d5-9333-0028d5a3ed74" />
+    <file url="file://$PROJECT_DIR$/db/productos_prueba.sql" value="ec6c65e3-1a51-49d5-9333-0028d5a3ed74" />
+  </component>
+</project>

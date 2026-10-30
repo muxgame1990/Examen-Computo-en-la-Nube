@@ -2,18 +2,20 @@ package mx.NovaCore.modelos;
 
 
 public enum Categoria {
-    PERIFERICOS("perifericos", "Perifericos"),
-    TARJETAS_DE_VIDEO("tarjetas de video", "Tarjetas de video"),
-    PROCESADORES("procesadores", "Procesadores"),
-    MEMORIA_RAM("memoria ram", "Memoria RAM"),
-    ACCESORIOS("accesorios", "Accesorios");
+    PERIFERICOS("perifericos", "Perifericos","PER"),
+    TARJETAS_DE_VIDEO("tarjetas de video", "Tarjetas de video", "GPU"),
+    PROCESADORES("procesadores", "Procesadores", "CPU"),
+    MEMORIA_RAM("memoria ram", "Memoria RAM","RAM"),
+    ACCESORIOS("accesorios", "Accesorios","ACC");
 
     private final String valorBd;
     private final String etiqueta;
+    private final String prefijo;
     private CategoriaConverter cv = new CategoriaConverter();
-    Categoria(String valorBd, String etiqueta) {
+    Categoria(String valorBd, String etiqueta, String prefijo) {
         this.valorBd = valorBd;
         this.etiqueta = etiqueta;
+        this.prefijo = prefijo;
     }
 
     public String getValorBd() { return valorBd; }
@@ -25,6 +27,10 @@ public enum Categoria {
             if (c.valorBd.equalsIgnoreCase(valor)) return c;
         }
         throw new IllegalArgumentException("Categoría desconocida: " + valor);
+    }
+
+    public String getPrefijo() {
+        return prefijo;
     }
 
     public Categoria getEtiquetas(String et){

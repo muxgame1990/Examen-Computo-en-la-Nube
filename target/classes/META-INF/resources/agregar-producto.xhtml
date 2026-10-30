@@ -72,10 +72,25 @@
 
                     <p:inputText
                             id="identificador"
-                            value="#{adminPanelBean.producto.id}"
-                            required="true"
-                            requiredMessage="Ingresa el identificador."/>
+                            value="#{adminPanelBean.idTemporal}"
+                            readonly="true"
+                            placeholder="Selecciona una categoría"/>
                 </h:panelGroup>
+
+                <h:panelGroup layout="block"
+                              styleClass="campo-producto">
+
+                    <p:outputLabel for="nombre"
+                                   value="Nombre del producto"/>
+
+                    <p:inputText
+                            id="nombre"
+                            value="#{adminPanelBean.producto.nombre}"
+                            required="true"
+                            requiredMessage="Ingresa el nombre del producto."/>
+
+                </h:panelGroup>
+
 
                 <h:panelGroup layout="block"
                               styleClass="campo-producto">
@@ -113,7 +128,13 @@
                                 value="#{adminPanelBean.categorias}"
                                 var="cat"
                                 itemLabel="#{cat.etiqueta}"
-                                itemValue="#{cat.etiqueta}"/>
+                                itemValue="#{cat}"/>
+
+                        <p:ajax
+                                event="change"
+                                listener="#{adminPanelBean.actualizarIdentificadorProvisional}"
+                                process="@this"
+                                update="identificador"/>
                     </p:selectOneMenu>
                 </h:panelGroup>
 
@@ -169,7 +190,7 @@
                         icon="pi pi-check"
                         action="#{adminPanelBean.agregarProducto}"
                         process="@form"
-                        update="mensajes"
+                        update="mensajes: formProductos:tablaProductos :formProductos:mensajes"
                         oncomplete="if (!args.validationFailed) PF('dialogAgregarProducto').hide()"
                         styleClass="boton-agregar"/>
 
