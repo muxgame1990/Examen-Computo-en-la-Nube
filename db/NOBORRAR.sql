@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `computo_examen`.`usuario` (
   PRIMARY KEY (`usuario_id`),
   UNIQUE INDEX `uq_usuario_id_publico` (`id_publico` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -64,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `computo_examen`.`productos` (
   `identificador` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`producto_id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 17
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -85,6 +87,27 @@ CREATE TABLE IF NOT EXISTS `computo_examen`.`carrito_producto` (
   CONSTRAINT `fk_cp_producto`
     FOREIGN KEY (`producto_id`)
     REFERENCES `computo_examen`.`productos` (`producto_id`)
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `computo_examen`.`movimiento_inventario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `computo_examen`.`movimiento_inventario` (
+  `movimiento_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `producto_id` INT(11) NOT NULL,
+  `tipo` ENUM('entrada', 'salida') NOT NULL,
+  `cantidad` INT(11) NOT NULL,
+  `fecha_hora` DATETIME NOT NULL,
+  PRIMARY KEY (`movimiento_id`),
+  INDEX `idx_movimiento_producto` (`producto_id` ASC) VISIBLE,
+  INDEX `idx_movimiento_fecha` (`fecha_hora` ASC) VISIBLE,
+  CONSTRAINT `fk_movimiento_producto`
+    FOREIGN KEY (`producto_id`)
+    REFERENCES `computo_examen`.`productos` (`producto_id`)
+    ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

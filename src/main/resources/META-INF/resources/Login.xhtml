@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>AVANTI SHOP - Iniciar sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap"/>
+    <h:outputStylesheet library="css" name="login.css"/>
+</h:head>
+
+<h:body styleClass="login-body">
+
+    <header class="login-header">
+        <h1>AVANTI SHOP</h1>
+    </header>
+
+    <main class="login-main">
+
+        <div class="login-card">
+
+            <h2 class="login-titulo">Iniciar sesión</h2>
+
+            <h:form id="formLogin">
+
+                <p:growl id="mensajes" showDetail="true" life="3500"/>
+
+                <div class="login-campo">
+                    <p:outputLabel for="usuario" value="Usuario"/>
+                    <p:inputText id="usuario"
+                                 value="#{loginBean.usuario}"
+                                 placeholder="Ingresa tu usuario"
+                                 required="true"
+                                 requiredMessage="Escribe tu usuario."/>
+                </div>
+
+                <div class="login-campo">
+                    <p:outputLabel for="password" value="Contraseña"/>
+                    <p:password id="password"
+                                value="#{loginBean.password}"
+                                placeholder="Ingresa tu contraseña"
+                                toggleMask="true"
+                                feedback="false"
+                                required="true"
+                                requiredMessage="Escribe tu contraseña."/>
+                </div>
+
+                <p:commandButton id="btnEntrar"
+                                 value="Iniciar sesión"
+                                 action="#{loginBean.InicioSesion()}"
+                                 process="@form"
+                                 update="mensajes password"
+                                 styleClass="login-boton"/>
+
+                <p:defaultCommand target="btnEntrar"/>
+
+            </h:form>
+
+        </div>
+
+    </main>
+
+</h:body>
+</html>

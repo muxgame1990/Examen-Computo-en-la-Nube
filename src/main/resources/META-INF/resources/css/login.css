@@ -1,0 +1,145 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+}
+
+.login-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f4ece1;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.login-header {
+    height: 156px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    background: #cc6244;
+    color: #ffffff;
+    box-shadow: 0 3px 5px #0003;
+}
+
+.login-header h1 {
+    margin: 0;
+    font-size: clamp(32px, 4.5vw, 62px);
+    font-style: italic;
+    font-weight: 700;
+}
+
+.login-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 16px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 48px 56px 44px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 3px 5px #0003;
+}
+
+.login-titulo {
+    margin: 0 0 28px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #111111;
+}
+
+.login-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.login-campo .ui-outputlabel {
+    font-size: 16px;
+    font-weight: 400;
+    color: #111111;
+}
+
+.login-campo .ui-password {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+.login-campo .ui-inputfield {
+    width: 100%;
+    height: 58px;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #222222;
+    background: #ffffff;
+    border: 1px solid #8f8f8f !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.login-campo .ui-inputfield::placeholder {
+    color: #8a8a8a;
+}
+
+.login-campo .ui-inputfield:enabled:focus {
+    outline: none;
+    border-color: #cc6244 !important;
+    box-shadow: 0 0 0 3px rgba(204, 98, 68, 0.25) !important;
+}
+
+.login-campo .ui-password .ui-inputfield {
+    padding-right: 52px;
+}
+
+.login-campo .ui-password .pi {
+    right: 18px;
+    font-size: 22px;
+    color: #555555 !important;
+    cursor: pointer;
+}
+
+.login-boton {
+    width: 100%;
+    height: 60px;
+    margin-top: 6px;
+    background: #7a1d1d !important;
+    border: 1px solid #5c1414 !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    font-family: inherit;
+}
+
+.login-boton .ui-button-text {
+    padding: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.login-boton:hover {
+    background: #5c1414 !important;
+}
+
+@media (max-width: 800px) {
+    .login-header {
+        height: 110px;
+    }
+
+    .login-card {
+        padding: 36px 28px 32px;
+    }
+
+    .login-titulo {
+        font-size: 26px;
+    }
+}

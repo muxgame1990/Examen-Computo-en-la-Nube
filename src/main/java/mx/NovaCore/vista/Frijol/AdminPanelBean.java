@@ -123,8 +123,9 @@ public class AdminPanelBean implements Serializable {
 
     }
 
-    public void cerrarSesion() {
-
+    public String cerrarSesion() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "login?faces-reditect=true";
     }
 
     public Categoria[] getCategorias(){
