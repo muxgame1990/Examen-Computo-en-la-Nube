@@ -70,7 +70,7 @@ Instala lo siguiente:
 ### 2. Descargar el proyecto
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/muxgame1990/Examen-Computo-en-la-Nube.git
 cd Examen-Computo-en-la-Nube
 ```
 
