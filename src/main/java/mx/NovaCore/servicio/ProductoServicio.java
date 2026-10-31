@@ -17,8 +17,11 @@ public class ProductoServicio {
 
 
     public List<Producto> listaProductos(){
-        System.out.println("Llegue");
         return repositorio.findAll();
+    }
+
+    public Producto buscarPorId(Integer id){
+        return repositorio.findById(id).orElse(null);
     }
 
     public List<Producto> findByCaregoria(Categoria categoria){

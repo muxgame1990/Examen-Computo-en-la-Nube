@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>AVANTI SHOP - Tienda</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="catalogForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+                    <a href="#">Checkout</a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+            </header>
+
+            <main class="catalog">
+
+                <p:growl id="mensajes"
+                         showDetail="true"
+                         life="3500"/>
+
+                <h1 class="page-title">Bienvenido</h1>
+
+                <section class="toolbar" aria-label="Filtros de catálogo">
+
+                    <h:panelGroup id="filters"
+                                  layout="block"
+                                  styleClass="filters"
+                                  title="Filtrar por categoría">
+
+                        <p:commandButton value="Todos los items"
+                                         action="#{indexBean.mostrarTodos}"
+                                         process="@this"
+                                         update="@form"
+                                         styleClass="filter-pill #{empty indexBean.categoriaSeleccionada ? 'is-active' : ''}"/>
+
+                        <ui:repeat value="#{indexBean.categorias}" var="categoria">
+                            <p:commandButton value="#{categoria.etiqueta}"
+                                             action="#{indexBean.filtrar(categoria)}"
+                                             process="@this"
+                                             update="@form"
+                                             styleClass="filter-pill #{indexBean.categoriaSeleccionada eq categoria ? 'is-active' : ''}"/>
+                        </ui:repeat>
+
+                    </h:panelGroup>
+
+                    <div class="search-box">
+                        <p:inputText id="busqueda"
+                                     value="#{indexBean.busqueda}"
+                                     placeholder="Buscar..."
+                                     aria-label="Buscar productos"
+                                     autocomplete="off">
+                            <p:ajax event="keyup"
+                                    delay="350"
+                                    listener="#{indexBean.buscar}"
+                                    process="@this"
+                                    update="results"/>
+                        </p:inputText>
+                    </div>
+
+                    <div class="sort-control">
+                        <span class="visually-hidden">Ordenar productos</span>
+
+                        <p:selectOneMenu id="orden"
+                                         value="#{indexBean.orden}"
+                                         styleClass="sort-menu">
+                            <f:selectItem itemLabel="Ordenar: Destacados"
+                                          itemValue="featured"/>
+                            <f:selectItem itemLabel="Precio: menor a mayor"
+                                          itemValue="price-asc"/>
+                            <f:selectItem itemLabel="Precio: mayor a menor"
+                                          itemValue="price-desc"/>
+                            <f:selectItem itemLabel="Nombre: A-Z"
+                                          itemValue="name-asc"/>
+
+                            <p:ajax listener="#{indexBean.ordenar}"
+                                    process="@this"
+                                    update="results"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                </section>
+
+                <h:panelGroup id="results"
+                              layout="block">
+
+                    <h:panelGroup layout="block"
+                                  styleClass="product-grid"
+                                  rendered="#{not empty indexBean.productos}">
+
+                        <ui:repeat value="#{indexBean.productos}" var="producto">
+
+                            <article class="product-card">
+
+                                <a class="product-media"
+                                   href="detallado.xhtml?id=#{producto.id}"
+                                   aria-label="Ver detalle de #{producto.nombre}">
+                                    <h:graphicImage value="#{producto.imagenUrl}"
+                                                    alt="#{producto.nombre}"
+                                                    rendered="#{not empty producto.imagenUrl}"/>
+
+                                    <h:outputText value="Foto del producto"
+                                                  rendered="#{empty producto.imagenUrl}"/>
+                                </a>
+
+                                <div class="product-info">
+                                    <h2 class="product-name">#{producto.nombre}</h2>
+                                    <p class="product-description">#{producto.descripcion}</p>
+                                </div>
+
+                                <div class="product-footer">
+                                    <span class="product-price">
+                                        <h:outputText value="#{producto.precio}">
+                                            <f:convertNumber minFractionDigits="0"
+                                                             maxFractionDigits="2"/>
+                                        </h:outputText>
+                                        Pesos
+                                    </span>
+
+                                    <ui:fragment rendered="#{producto.stock gt 0}">
+
+                                        <p:commandButton value="COMPRAR"
+                                                         action="#{carritoBean.agregar(producto.id)}"
+                                                         process="@this"
+                                                         update="@form"
+                                                         styleClass="buy-button"
+                                                         rendered="#{carritoBean.getCantidad(producto.id) eq 0}"/>
+
+                                        <h:panelGroup layout="inline"
+                                                      styleClass="quantity-stepper"
+                                                      rendered="#{carritoBean.getCantidad(producto.id) gt 0}">
+                                            <p:commandButton value="−"
+                                                             action="#{carritoBean.decrementar(producto.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Quitar uno"/>
+                                            <span class="quantity-value">#{carritoBean.getCantidad(producto.id)}</span>
+                                            <p:commandButton value="+"
+                                                             action="#{carritoBean.incrementar(producto.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Agregar uno"/>
+                                        </h:panelGroup>
+
+                                    </ui:fragment>
+
+                                    <h:outputText value="Agotado"
+                                                  styleClass="stock-badge"
+                                                  rendered="#{producto.stock le 0}"/>
+                                </div>
+
+                            </article>
+
+                        </ui:repeat>
+
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block"
+                                  styleClass="empty-state"
+                                  rendered="#{empty indexBean.productos}">
+                        <h:outputText value="No hay productos que coincidan."/>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>

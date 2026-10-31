@@ -9,7 +9,11 @@ import java.util.Optional;
 @Service
 
 public class ClienteServicio {
-    ClienteRepositorio clienteRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+
+    public ClienteServicio(ClienteRepositorio clienteRepositorio) {
+        this.clienteRepositorio = clienteRepositorio;
+    }
 
     public ClienteRepositorio getClienteRepositorio() {
         return clienteRepositorio;

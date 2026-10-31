@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>AVANTI SHOP - Iniciar sesión</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="login.css"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="loginForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+                    <a href="#">Checkout</a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a class="is-active" href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+                <div class="search-box">
+                    <input type="search"
+                           placeholder="Buscar..."
+                           aria-label="Buscar productos"
+                           autocomplete="off"/>
+                </div>
+
+            </header>
+
+            <p:growl id="mensajes"
+                     showDetail="true"
+                     life="4000"/>
+
+            <main class="catalog login-page">
+
+                <section class="login-card" aria-labelledby="loginTitle">
+
+                    <h1 id="loginTitle" class="login-title">Iniciar sesión</h1>
+
+                    <p class="login-subtitle">
+                        Accede para agregar productos a tu carrito.
+                    </p>
+
+                    <div class="login-field">
+                        <h:outputLabel for="usuario" value="Usuario"/>
+                        <p:inputText id="usuario"
+                                     value="#{sesionBean.usuario}"
+                                     autocomplete="username"
+                                     styleClass="login-input"/>
+                    </div>
+
+                    <div class="login-field">
+                        <h:outputLabel for="password" value="Contraseña"/>
+                        <p:password id="password"
+                                    value="#{sesionBean.password}"
+                                    feedback="false"
+                                    autocomplete="current-password"
+                                    styleClass="login-input"/>
+                    </div>
+
+                    <p:commandButton value="Entrar"
+                                     action="#{sesionBean.login}"
+                                     ajax="false"
+                                     styleClass="login-button"/>
+
+                    <a class="login-back" href="index.xhtml">
+                        Volver a la tienda
+                    </a>
+
+                </section>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>

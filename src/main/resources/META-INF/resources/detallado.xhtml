@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{detalleBean.id}"/>
+    <f:viewAction action="#{detalleBean.cargar}"/>
+</f:metadata>
+
+<h:head>
+    <title>AVANTI SHOP - Detalle del producto</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="detalle.css"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="detailForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+                    <a href="#">Checkout</a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+            </header>
+
+            <main class="catalog detail-page">
+
+                <p:growl id="mensajes"
+                         showDetail="true"
+                         life="3500"/>
+
+                <h:panelGroup layout="block"
+                              rendered="#{not empty detalleBean.producto}">
+
+                    <a class="detail-back" href="index.xhtml">
+                        &#8592; Volver a la tienda
+                    </a>
+
+                    <article class="detail-card">
+
+                        <div class="detail-media">
+                            <h:graphicImage value="#{detalleBean.producto.imagenUrl}"
+                                            alt="#{detalleBean.producto.nombre}"
+                                            rendered="#{not empty detalleBean.producto.imagenUrl}"/>
+
+                            <h:outputText value="Foto del producto"
+                                          rendered="#{empty detalleBean.producto.imagenUrl}"/>
+                        </div>
+
+                        <div class="detail-info">
+
+                            <span class="detail-category">
+                                #{detalleBean.producto.categoria.etiqueta}
+                            </span>
+
+                            <h1 class="detail-title">
+                                #{detalleBean.producto.nombre}
+                            </h1>
+
+                            <p class="detail-description">
+                                #{detalleBean.producto.descripcion}
+                            </p>
+
+                            <h:outputText value="Disponibles: #{detalleBean.producto.stock}"
+                                          styleClass="detail-stock"
+                                          rendered="#{detalleBean.producto.stock gt 0}"/>
+
+                            <div class="detail-purchase">
+
+                                <span class="detail-price">
+                                    <h:outputText value="#{detalleBean.producto.precio}">
+                                        <f:convertNumber minFractionDigits="0"
+                                                         maxFractionDigits="2"/>
+                                    </h:outputText>
+                                    Pesos
+                                </span>
+
+                                <div class="detail-actions">
+
+                                    <ui:fragment rendered="#{detalleBean.producto.stock gt 0}">
+
+                                        <p:commandButton value="COMPRAR"
+                                                         action="#{carritoBean.agregar(detalleBean.producto.id)}"
+                                                         process="@this"
+                                                         update="@form"
+                                                         styleClass="buy-button detail-buy-button"
+                                                         rendered="#{carritoBean.getCantidad(detalleBean.producto.id) eq 0}"/>
+
+                                        <h:panelGroup layout="inline"
+                                                      styleClass="quantity-stepper detail-stepper"
+                                                      rendered="#{carritoBean.getCantidad(detalleBean.producto.id) gt 0}">
+                                            <p:commandButton value="−"
+                                                             action="#{carritoBean.decrementar(detalleBean.producto.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Quitar uno"/>
+                                            <span class="quantity-value">#{carritoBean.getCantidad(detalleBean.producto.id)}</span>
+                                            <p:commandButton value="+"
+                                                             action="#{carritoBean.incrementar(detalleBean.producto.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Agregar uno"/>
+                                        </h:panelGroup>
+
+                                    </ui:fragment>
+
+                                    <h:outputText value="Agotado"
+                                                  styleClass="stock-badge"
+                                                  rendered="#{detalleBean.producto.stock le 0}"/>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"
+                              rendered="#{empty detalleBean.producto}">
+
+                    <section class="detail-missing">
+                        <h1>Producto no encontrado</h1>
+                        <p>El producto que buscas no existe o ya no está disponible.</p>
+                        <a class="detail-missing-link" href="index.xhtml">
+                            Volver a la tienda
+                        </a>
+                    </section>
+
+                </h:panelGroup>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>

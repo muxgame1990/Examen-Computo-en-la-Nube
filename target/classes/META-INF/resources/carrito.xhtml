@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>AVANTI SHOP - Carrito</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="carrito.css"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="cartForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a class="is-active" href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+                    <a href="#">Checkout</a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+                <div class="search-box">
+                    <input type="search"
+                           placeholder="Buscar..."
+                           aria-label="Buscar productos"
+                           autocomplete="off"/>
+                </div>
+
+            </header>
+
+            <main class="catalog cart-page">
+
+                <p:growl id="mensajes"
+                         showDetail="true"
+                         life="3500"/>
+
+                <h:panelGroup id="cartContent"
+                              layout="block">
+
+                    <h:panelGroup layout="block"
+                                  styleClass="cart-empty cart-login-required"
+                                  rendered="#{not sesionBean.loggedIn}">
+
+                        <h2>Inicia sesión</h2>
+                        <p>Necesitas iniciar sesión para ver y administrar tu carrito.</p>
+                        <a class="checkout-button empty-cart-link" href="login.xhtml">
+                            Iniciar sesión
+                        </a>
+
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block"
+                                  rendered="#{sesionBean.loggedIn}">
+
+                        <div class="cart-heading">
+                            <div>
+                                <h1 class="page-title">Tu carrito</h1>
+                                <p class="cart-count-label">
+                                    <h:outputText value="#{carritoBean.cantidadLineas} #{carritoBean.cantidadLineas eq 1 ? 'producto' : 'productos'}"/>
+                                </p>
+                            </div>
+
+                            <a class="cart-continue" href="index.xhtml">Seguir comprando</a>
+                        </div>
+
+                        <div class="cart-layout">
+
+                            <section class="cart-items"
+                                     aria-label="Productos en el carrito">
+
+                                <ui:repeat value="#{carritoBean.lineas}" var="linea">
+
+                                    <article class="cart-item">
+
+                                        <div class="cart-item-media">
+                                            <h:graphicImage value="#{linea.imagenUrl}"
+                                                            alt="#{linea.nombre}"
+                                                            rendered="#{not empty linea.imagenUrl}"/>
+
+                                            <h:outputText value="Foto del producto"
+                                                          rendered="#{empty linea.imagenUrl}"/>
+                                        </div>
+
+                                        <div class="cart-item-info">
+                                            <h2 class="cart-item-name">#{linea.nombre}</h2>
+                                            <p class="cart-item-description">#{linea.descripcion}</p>
+                                            <span class="cart-item-unit">
+                                                <h:outputText value="#{linea.precio}">
+                                                    <f:convertNumber minFractionDigits="0"
+                                                                     maxFractionDigits="2"/>
+                                                </h:outputText>
+                                                Pesos c/u
+                                            </span>
+                                        </div>
+
+                                        <div class="cart-item-quantity quantity-stepper">
+                                            <p:commandButton value="−"
+                                                             action="#{carritoBean.decrementar(linea.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Quitar uno"/>
+                                            <span class="quantity-value">#{linea.cantidad}</span>
+                                            <p:commandButton value="+"
+                                                             action="#{carritoBean.incrementar(linea.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Agregar uno"/>
+                                        </div>
+
+                                        <span class="cart-item-subtotal">
+                                            <h:outputText value="#{linea.subtotal}">
+                                                <f:convertNumber minFractionDigits="0"
+                                                                 maxFractionDigits="2"/>
+                                            </h:outputText>
+                                            Pesos
+                                        </span>
+
+                                        <p:commandButton icon="pi pi-times"
+                                                         action="#{carritoBean.eliminar(linea.id)}"
+                                                         process="@this"
+                                                         update="@form"
+                                                         styleClass="remove-button"
+                                                         title="Quitar del carrito"/>
+
+                                    </article>
+
+                                </ui:repeat>
+
+                                <h:panelGroup layout="block"
+                                              styleClass="cart-empty"
+                                              rendered="#{carritoBean.vacio}">
+                                    <h2>Tu carrito está vacío</h2>
+                                    <p>Agrega productos para continuar con tu compra.</p>
+                                    <a class="checkout-button empty-cart-link" href="index.xhtml">
+                                        Volver a la tienda
+                                    </a>
+                                </h:panelGroup>
+
+                            </section>
+
+                            <aside class="cart-summary" aria-label="Resumen de compra">
+                                <h2>Resumen</h2>
+
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span>
+                                        <h:outputText value="#{carritoBean.subtotal}">
+                                            <f:convertNumber minFractionDigits="0"
+                                                             maxFractionDigits="2"/>
+                                        </h:outputText>
+                                        Pesos
+                                    </span>
+                                </div>
+
+                                <div class="summary-row">
+                                    <span>Envío</span>
+                                    <span>Calculado al pagar</span>
+                                </div>
+
+                                <div class="summary-row summary-total">
+                                    <span>Total</span>
+                                    <span>
+                                        <h:outputText value="#{carritoBean.total}">
+                                            <f:convertNumber minFractionDigits="0"
+                                                             maxFractionDigits="2"/>
+                                        </h:outputText>
+                                        Pesos
+                                    </span>
+                                </div>
+
+                                <p:commandButton value="Finalizar compra"
+                                                 action="#{carritoBean.finalizarCompra}"
+                                                 ajax="false"
+                                                 disabled="#{carritoBean.vacio}"
+                                                 styleClass="checkout-button"/>
+
+                                <a class="summary-link" href="index.xhtml">Seguir comprando</a>
+                            </aside>
+
+                        </div>
+
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>
