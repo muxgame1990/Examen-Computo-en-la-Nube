@@ -12,8 +12,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Service
+@ConditionalOnProperty(name = "app.imagenes.almacenamiento", havingValue = "local", matchIfMissing = true)
 public class LocalImagenServicio
         implements AlmacenamientoImagenServicio {
 

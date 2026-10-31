@@ -65,7 +65,7 @@ public class AdminPanelBean implements Serializable {
             String contexto = FacesContext.getCurrentInstance()
                     .getExternalContext()
                     .getRequestContextPath();
-            urlImagenEdicion = contexto + "/imagenes/" + clave;
+            urlImagenEdicion = clave.startsWith("http") ? clave : contexto + "/imagenes/" + clave;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_INFO, "Imagen cargada", "La nueva imagen se guardará al confirmar los cambios."));
         } catch (IOException | IllegalArgumentException e) {
@@ -101,7 +101,7 @@ public class AdminPanelBean implements Serializable {
                     .getExternalContext()
                     .getRequestContextPath();
 
-            urlImagen = contexto + "/imagenes/" + clave;
+            urlImagen = clave.startsWith("http") ? clave : contexto + "/imagenes/" + clave;
 
             FacesContext.getCurrentInstance()
                     .addMessage(null,
