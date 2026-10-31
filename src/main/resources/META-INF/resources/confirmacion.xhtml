@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <title>AVANTI SHOP - Compra confirmada</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="confirmacion.css"/>
+</h:head>
+
+<h:body>
+
+    <div class="site">
+
+        <header class="site-header">
+
+            <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="index.xhtml">Tienda</a>
+                <a href="carrito.xhtml">Carrito</a>
+                <a href="#">Checkout</a>
+            </nav>
+
+            <div class="search-box">
+                <input type="search"
+                       placeholder="Buscar..."
+                       aria-label="Buscar productos"
+                       autocomplete="off"
+                       onkeydown="if (event.key === 'Enter') { event.preventDefault(); window.location = 'index.xhtml?q=' + encodeURIComponent(this.value); }"/>
+            </div>
+
+        </header>
+
+        <main class="catalog confirmation-page">
+
+            <section class="confirmation-card"
+                     aria-labelledby="confirmationTitle">
+
+                <div class="confirmation-icon" aria-hidden="true">
+                    <i class="pi pi-check-circle"></i>
+                </div>
+
+                <h1 class="confirmation-title"
+                    id="confirmationTitle">
+                    Compra realizada exitosamente
+                </h1>
+
+                <p class="confirmation-subtitle">
+                    Tu pedido fue registrado correctamente.
+                </p>
+
+                <dl class="confirmation-details">
+
+                    <div class="confirmation-row">
+                        <dt>Cliente</dt>
+                        <dd>#{confirmacionBean.cliente}</dd>
+                    </div>
+
+                    <div class="confirmation-row">
+                        <dt>ID de transacción</dt>
+                        <dd class="confirmation-transaction">
+                            #{confirmacionBean.idTransaccion}
+                        </dd>
+                    </div>
+
+                    <div class="confirmation-row">
+                        <dt>Fecha</dt>
+                        <dd>#{confirmacionBean.fecha}</dd>
+                    </div>
+
+                    <div class="confirmation-row">
+                        <dt>Total</dt>
+                        <dd class="confirmation-total">
+                            #{confirmacionBean.total}
+                        </dd>
+                    </div>
+
+                </dl>
+
+                <a class="confirmation-action" href="index.xhtml">
+                    Volver a la tienda
+                </a>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</h:body>
+</html>

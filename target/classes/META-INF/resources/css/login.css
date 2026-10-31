@@ -142,4 +142,13 @@ html, body {
     .login-titulo {
         font-size: 26px;
     }
+    .login-registro a {
+        color: #cc6244;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .login-registro a:hover {
+        text-decoration: underline;
+    }
 }

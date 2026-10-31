@@ -58,7 +58,8 @@
                         styleClass="logout-form">
 
                     <p:commandLink
-                            action="#{adminPanelBean.cerrarSesion}"
+                            action="#{sesionBean.logout}"
+                            ajax="false"
                             styleClass="sidebar-link logout-link"
                             process="@this">
 
@@ -205,11 +206,15 @@
                                           styleClass="actions-column">
 
 
-                                    <p:commandButton
-                                            type="button"
-                                            icon="pi pi-pencil"
-                                            title="Editar producto"
-                                            styleClass="edit-button"/>
+                                    <p:commandButton icon="pi pi-pencil"
+                                                     title="Editar producto"
+                                                     styleClass="edit-button"
+                                                     action="#{adminPanelBean.prepararEdicion(producto)}"
+                                                     process="@this"
+                                                     update=":formEditarProducto"
+                                                     oncomplete="PF('dialogEditarProducto').show()">
+                                        <p:resetInput target=":formEditarProducto"/>
+                                    </p:commandButton>
 
 
                                     <p:commandButton
@@ -241,5 +246,6 @@
 
     </div>
     <ui:include src="agregar-producto.xhtml"/>
+    <ui:include src="editar-producto.xhtml"/>
 </h:body>
 </html>

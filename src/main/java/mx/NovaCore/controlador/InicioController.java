@@ -8,6 +8,6 @@ public class InicioController {
 
     @GetMapping("/")
     public String inicio() {
-        return "index";
+        return "forward:/index.xhtml";
     }
 }

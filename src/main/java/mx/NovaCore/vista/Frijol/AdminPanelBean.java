@@ -5,18 +5,23 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
 import mx.NovaCore.modelos.Categoria;
+import mx.NovaCore.modelos.CategoriaConverter;
 import mx.NovaCore.modelos.Producto;
 import mx.NovaCore.servicio.ProductoServicio;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.application.FacesMessage;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import java.io.IOException;
 import mx.NovaCore.servicio.AlmacenamientoImagenServicio;
+import org.primefaces.PrimeFaces;
 
 @Named("adminPanelBean")
 @ViewScoped
@@ -30,13 +35,18 @@ public class AdminPanelBean implements Serializable {
     private Categoria filtroPorCategoria;
     @Inject
     private AlmacenamientoImagenServicio almacenamientoImagenServicio;
+
     private String urlImagen;
     private String urlImagenDefinitiva;
     private String idTemporal;
+    private Producto productoEnEdicion;
+    private String urlImagenEdicion;
+
     @PostConstruct
     public void init() {
 
         producto = new Producto();
+        productoEnEdicion = new Producto();
         listaProductos = new ArrayList<>();
         cargarLista();
 
@@ -44,13 +54,49 @@ public class AdminPanelBean implements Serializable {
     public void cargarLista(){
         listaProductos = ps.listaProductos();
     }
+    public void prepararEdicion(Producto seleccionado) {
+        productoEnEdicion = ps.buscarPorId(seleccionado.getId());
+        urlImagenEdicion = productoEnEdicion.getImagenUrl();
+    }
+
+    public void subirImagenEdicion(FileUploadEvent event) {
+        try {
+            String clave = almacenamientoImagenServicio.guardar(event.getFile());
+            String contexto = FacesContext.getCurrentInstance()
+                    .getExternalContext()
+                    .getRequestContextPath();
+            urlImagenEdicion = contexto + "/imagenes/" + clave;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Imagen cargada", "La nueva imagen se guardará al confirmar los cambios."));
+        } catch (IOException | IllegalArgumentException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "No se pudo cargar la imagen", e.getMessage()));
+        }
+    }
+
+    public void guardarEdicion() {
+        try {
+            productoEnEdicion.setImagenUrl(urlImagenEdicion);
+            ps.update(productoEnEdicion.getId(), productoEnEdicion);
+            buscarProductos();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Producto actualizado",
+                    productoEnEdicion.getNombre() + " se actualizó correctamente."));
+            PrimeFaces.current().ajax().addCallbackParam("editado", true);
+        } catch (RuntimeException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "No se pudo actualizar", e.getMessage()));
+        }
+    }
     public void prepararNuevoProducto() { }
 
     public void subirImagen(FileUploadEvent event) {
+
         try {
             UploadedFile archivo = event.getFile();
 
             String clave = almacenamientoImagenServicio.guardar(archivo);
+
             String contexto = FacesContext.getCurrentInstance()
                     .getExternalContext()
                     .getRequestContextPath();
@@ -112,32 +158,35 @@ public class AdminPanelBean implements Serializable {
     public void agregarProducto() {
         try {
             if (producto.getCategoria() == null) {
-                throw new IllegalArgumentException("Debes seleccionar una categoría primero");
+                throw new IllegalArgumentException("Debes seleccionar una categoría primero.");
+            }
+            if (urlImagen == null || urlImagen.isBlank()) {
+                throw new IllegalArgumentException("Sube una imagen del producto antes de guardarlo.");
             }
 
             producto.setImagenUrl(urlImagen);
-
             producto.setIdentificador(idTemporal);
 
             ps.insert(producto);
-            cargarLista();
+            buscarProductos();
 
             producto = new Producto();
             idTemporal = null;
             urlImagen = null;
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto registrado", "El producto se registro correctamente."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "Producto registrado", "El producto se registró correctamente."));
+            PrimeFaces.current().ajax().addCallbackParam("agregado", true);
 
         } catch (RuntimeException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al registrar", "No se pudo registrar el product"
-                    )
-            );
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "No se pudo registrar el producto", e.getMessage()));
         }
     }
 
     public String cerrarSesion() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "Login?faces-redirect=true";
+        return "login?faces-redirect=true";
     }
 
     public Categoria[] getCategorias(){
@@ -207,4 +256,9 @@ public class AdminPanelBean implements Serializable {
     public void setIdTemporal(String idTemporal) {
         this.idTemporal = idTemporal;
     }
+    public Producto getProductoEnEdicion() { return productoEnEdicion; }
+    public void setProductoEnEdicion(Producto productoEnEdicion) { this.productoEnEdicion = productoEnEdicion; }
+
+    public String getUrlImagenEdicion() { return urlImagenEdicion; }
+    public void setUrlImagenEdicion(String urlImagenEdicion) { this.urlImagenEdicion = urlImagenEdicion; }
 }

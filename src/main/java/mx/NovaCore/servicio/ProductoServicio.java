@@ -76,13 +76,18 @@ public class ProductoServicio {
         productoGuardado.setIdentificador(identificadorFinal);
         repositorio.save(productoGuardado);
     }
-    public void  update(Integer id,Producto producto){
-        Producto p = repositorio.findById(id).get();
-        p.setNombre(producto.getNombre());
-        p.setStock(producto.getStock());
-        p.setCategoria(producto.getCategoria());
-        p.setPrecio(producto.getPrecio());
-        p.setImagenUrl(producto.getImagenUrl());
+    public Producto buscarPorId(Integer id) {
+        return repositorio.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("El producto ya no existe"));
+    }
+    public void update(Integer id, Producto datos) {
+        Producto p = buscarPorId(id);
+        p.setNombre(datos.getNombre().trim());
+        p.setDescripcion(datos.getDescripcion().trim());
+        p.setPrecio(datos.getPrecio());
+        if (datos.getImagenUrl() != null && !datos.getImagenUrl().isBlank()) {
+            p.setImagenUrl(datos.getImagenUrl());
+        }
         repositorio.save(p);
     }
     public void delete(Integer id){

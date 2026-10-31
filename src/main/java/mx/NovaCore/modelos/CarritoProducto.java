@@ -8,8 +8,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "carrito_producto")
 public class CarritoProducto {
+
     @EmbeddedId
-    private CarritoProductoId id;
+    private CarritoProductoId id = new CarritoProductoId();
 
     @MapsId("carritoId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -30,10 +31,11 @@ public class CarritoProducto {
     @Column(name = "precioUnitario", nullable = false)
     private Double precioUnitario;
 
-    public CarritoProducto( Carrito carrito,Integer cantidad,Producto producto) {
+    public CarritoProducto(Carrito carrito, Integer cantidad, Producto producto) {
         this.carrito = carrito;
         this.cantidad = cantidad;
         this.producto = producto;
+        this.precioUnitario = producto.getPrecio();
     }
 
     public CarritoProducto() {

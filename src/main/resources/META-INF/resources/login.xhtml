@@ -30,7 +30,7 @@
                 <div class="login-campo">
                     <p:outputLabel for="usuario" value="Usuario"/>
                     <p:inputText id="usuario"
-                                 value="#{loginBean.usuario}"
+                                 value="#{sesionBean.usuario}"
                                  placeholder="Ingresa tu usuario"
                                  required="true"
                                  requiredMessage="Escribe tu usuario."/>
@@ -39,7 +39,7 @@
                 <div class="login-campo">
                     <p:outputLabel for="password" value="Contraseña"/>
                     <p:password id="password"
-                                value="#{loginBean.password}"
+                                value="#{sesionBean.password}"
                                 placeholder="Ingresa tu contraseña"
                                 toggleMask="true"
                                 feedback="false"
@@ -49,12 +49,13 @@
 
                 <p:commandButton id="btnEntrar"
                                  value="Iniciar sesión"
-                                 action="#{loginBean.InicioSesion()}"
+                                 action="#{sesionBean.login}"
                                  process="@form"
                                  update="mensajes password"
                                  styleClass="login-boton"/>
 
                 <p:defaultCommand target="btnEntrar"/>
+
                 <p class="login-registro">
                     ¿No tienes cuenta?
                     <p:commandLink value="Regístrate"
@@ -65,11 +66,16 @@
                     </p:commandLink>
                 </p>
 
+                <p class="login-registro">
+                    <a href="index.xhtml">Volver a la tienda</a>
+                </p>
+
             </h:form>
 
         </div>
 
     </main>
+
     <p:dialog widgetVar="dlgRegistro"
               header="Crear cuenta"
               modal="true"
@@ -128,7 +134,7 @@
             </div>
 
             <p:commandButton value="Crear cuenta"
-                             action="#{loginBean.Registrar()}"
+                             action="#{loginBean.registrar}"
                              process="@form"
                              update="mensajesRegistro"
                              oncomplete="if (args.registrado) PF('dlgRegistro').hide()"
@@ -136,5 +142,6 @@
 
         </h:form>
     </p:dialog>
+
 </h:body>
 </html>
