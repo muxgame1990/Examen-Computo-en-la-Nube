@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import java.io.FileNotFoundException;
 
 @Service
 @ConditionalOnProperty(name = "app.imagenes.almacenamiento", havingValue = "local", matchIfMissing = true)
@@ -108,5 +109,16 @@ public class LocalImagenServicio
         }
 
         return "productos/" + nombreNuevo;
+    }
+    @Override
+    public InputStream leer(String clave) throws IOException {
+        Path base = obtenerDirectorioBase();
+        Path archivo = base.resolve(clave).normalize();
+
+        if (!archivo.startsWith(base) || !Files.isRegularFile(archivo)) {
+            throw new FileNotFoundException("No existe la imagen: " + clave);
+        }
+
+        return Files.newInputStream(archivo);
     }
 }

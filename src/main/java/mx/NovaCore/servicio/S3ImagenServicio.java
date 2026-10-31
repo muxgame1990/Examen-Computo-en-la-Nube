@@ -9,8 +9,11 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
@@ -33,7 +36,6 @@ public class S3ImagenServicio implements AlmacenamientoImagenServicio {
 
     private final S3Client s3;
     private final String bucket;
-    private final String region;
 
     public S3ImagenServicio(@Value("${aws.s3.bucket}") String bucket,
                             @Value("${aws.region}") String region) {
@@ -41,7 +43,6 @@ public class S3ImagenServicio implements AlmacenamientoImagenServicio {
             throw new IllegalStateException("Falta la variable de entorno S3_BUCKET.");
         }
         this.bucket = bucket;
-        this.region = region;
         this.s3 = S3Client.builder()
                 .region(Region.of(region))
                 .build();
@@ -87,7 +88,23 @@ public class S3ImagenServicio implements AlmacenamientoImagenServicio {
             throw new IOException("No se pudo subir la imagen a S3: " + e.getMessage(), e);
         }
 
-        return "https://" + bucket + ".s3." + region + ".amazonaws.com/" + clave;
+        return clave;
+    }
+
+    @Override
+    public InputStream leer(String clave) throws IOException {
+        GetObjectRequest solicitud = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(clave)
+                .build();
+
+        try {
+            return s3.getObject(solicitud);
+        } catch (NoSuchKeyException e) {
+            throw new FileNotFoundException("No existe la imagen: " + clave);
+        } catch (SdkException e) {
+            throw new IOException("No se pudo leer la imagen de S3: " + e.getMessage(), e);
+        }
     }
 
     @PreDestroy
