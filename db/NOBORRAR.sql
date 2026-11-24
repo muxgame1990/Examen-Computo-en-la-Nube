@@ -32,7 +32,57 @@ ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
+USE computo_examen;
 
+CREATE TABLE IF NOT EXISTS `encuesta_reloj` (
+                                                `encuesta_id` INT NOT NULL AUTO_INCREMENT,
+                                                `id_publico_cliente` VARCHAR(45) NULL,
+                                                `interes_principal` ENUM('both', 'health', 'appearance') NOT NULL,
+                                                `nivel_ejercicio` ENUM('sedentary', 'moderate', 'active') NOT NULL,
+                                                `motivacion` ENUM('moderate', 'aggressive') NOT NULL,
+                                                `comodo_tecnologia` ENUM('yes', 'no') NOT NULL,
+                                                `modelo_recomendado` ENUM('i100', 'i500') NOT NULL,
+                                                `confianza` DOUBLE NOT NULL,
+                                                `fecha_hora` DATETIME NOT NULL,
+                                                PRIMARY KEY (`encuesta_id`),
+                                                INDEX `idx_encuesta_cliente` (`id_publico_cliente` ASC),
+                                                CONSTRAINT `fk_encuesta_usuario`
+                                                    FOREIGN KEY (`id_publico_cliente`)
+                                                        REFERENCES `usuario` (`id_publico`)
+                                                        ON DELETE SET NULL
+                                                        ON UPDATE CASCADE)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `entrenamiento_reloj` (
+                                                     `entrenamiento_id` INT NOT NULL AUTO_INCREMENT,
+                                                     `interes_principal` ENUM('both', 'health', 'appearance') NOT NULL,
+                                                     `nivel_ejercicio` ENUM('sedentary', 'moderate', 'active') NOT NULL,
+                                                     `motivacion` ENUM('moderate', 'aggressive') NOT NULL,
+                                                     `comodo_tecnologia` ENUM('yes', 'no') NOT NULL,
+                                                     `modelo` ENUM('i100', 'i500') NOT NULL,
+                                                     PRIMARY KEY (`entrenamiento_id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO entrenamiento_reloj
+(interes_principal, nivel_ejercicio, motivacion, comodo_tecnologia, modelo)
+VALUES
+    ('both',       'sedentary', 'moderate',   'yes', 'i100'),
+    ('both',       'sedentary', 'moderate',   'no',  'i100'),
+    ('health',     'sedentary', 'moderate',   'yes', 'i500'),
+    ('appearance', 'active',    'moderate',   'yes', 'i500'),
+    ('appearance', 'moderate',  'aggressive', 'yes', 'i500'),
+    ('appearance', 'moderate',  'aggressive', 'no',  'i100'),
+    ('health',     'moderate',  'aggressive', 'no',  'i500'),
+    ('both',       'active',    'moderate',   'yes', 'i100'),
+    ('both',       'moderate',  'aggressive', 'yes', 'i500'),
+    ('appearance', 'active',    'aggressive', 'yes', 'i500'),
+    ('both',       'active',    'aggressive', 'no',  'i500'),
+    ('health',     'active',    'moderate',   'no',  'i500'),
+    ('health',     'sedentary', 'aggressive', 'yes', 'i500'),
+    ('appearance', 'active',    'moderate',   'no',  'i100'),
+    ('health',     'sedentary', 'moderate',   'no',  'i100');
 -- -----------------------------------------------------
 -- Table `computo_examen`.`carrito`
 -- -----------------------------------------------------

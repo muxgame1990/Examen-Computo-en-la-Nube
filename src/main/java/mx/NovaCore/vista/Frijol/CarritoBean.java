@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import mx.NovaCore.servicio.RecomendacionServicio;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Named("carritoBean")
 @SessionScoped
@@ -35,6 +39,14 @@ public class CarritoBean implements Serializable {
     private double ultimoTotal;
 
     private final Map<Integer, Integer> cantidades = new LinkedHashMap<>();
+
+    private static final int CANTIDAD_RECOMENDACIONES = 4;
+
+    @Inject
+    private RecomendacionServicio recomendacionServicio;
+
+    private List<Producto> recomendaciones = List.of();
+    private Set<Integer> baseRecomendaciones = Set.of();
 
     public String agregar(Integer productoId) {
         if (!sesionBean.isLoggedIn()) {
@@ -249,6 +261,16 @@ public class CarritoBean implements Serializable {
 
     public boolean isVacio() {
         return cantidades.isEmpty();
+    }
+    public List<Producto> getRecomendaciones() {
+        if (!cantidades.keySet().equals(baseRecomendaciones)) {
+            baseRecomendaciones = new HashSet<>(cantidades.keySet());
+            recomendaciones = recomendacionServicio.recomendarPorCarrito(
+                    baseRecomendaciones,
+                    CANTIDAD_RECOMENDACIONES
+            );
+        }
+        return recomendaciones;
     }
 
     private String requerirLogin() {

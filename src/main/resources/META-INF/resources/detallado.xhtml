@@ -35,6 +35,7 @@
 
                 <nav class="main-nav" aria-label="Navegación principal">
                     <a href="index.xhtml">Tienda</a>
+                    <a href="recomendacion-reloj.xhtml">Encuesta</a>
                     <a href="carrito.xhtml">
                         Carrito
                         <h:outputText value="#{carritoBean.cantidadLineas}"
@@ -150,7 +151,76 @@
                         </div>
 
                     </article>
+                    <h:panelGroup layout="block"
+                                  styleClass="recommendations"
+                                  rendered="#{not empty detalleBean.recomendaciones}">
 
+                        <h2 class="recommendations-title">También te puede interesar</h2>
+
+                        <div class="product-grid">
+
+                            <ui:repeat value="#{detalleBean.recomendaciones}" var="recomendado">
+
+                                <article class="product-card">
+
+                                    <a class="product-media"
+                                       href="detallado.xhtml?id=#{recomendado.id}"
+                                       aria-label="Ver detalle de #{recomendado.nombre}">
+                                        <h:graphicImage value="#{recomendado.imagenUrl}"
+                                                        alt="#{recomendado.nombre}"
+                                                        rendered="#{not empty recomendado.imagenUrl}"/>
+
+                                        <h:outputText value="Foto del producto"
+                                                      rendered="#{empty recomendado.imagenUrl}"/>
+                                    </a>
+
+                                    <div class="product-info">
+                                        <h2 class="product-name">#{recomendado.nombre}</h2>
+                                        <p class="product-description">#{recomendado.descripcion}</p>
+                                    </div>
+
+                                    <div class="product-footer">
+                                        <span class="product-price">
+                                            <h:outputText value="#{recomendado.precio}">
+                                                <f:convertNumber minFractionDigits="0"
+                                                                 maxFractionDigits="2"/>
+                                            </h:outputText>
+                                            Pesos
+                                        </span>
+
+                                        <p:commandButton value="COMPRAR"
+                                                         action="#{carritoBean.agregar(recomendado.id)}"
+                                                         process="@this"
+                                                         update="@form"
+                                                         styleClass="buy-button"
+                                                         rendered="#{carritoBean.getCantidad(recomendado.id) eq 0}"/>
+
+                                        <h:panelGroup layout="inline"
+                                                      styleClass="quantity-stepper"
+                                                      rendered="#{carritoBean.getCantidad(recomendado.id) gt 0}">
+                                            <p:commandButton value="−"
+                                                             action="#{carritoBean.decrementar(recomendado.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Quitar uno"/>
+                                            <span class="quantity-value">#{carritoBean.getCantidad(recomendado.id)}</span>
+                                            <p:commandButton value="+"
+                                                             action="#{carritoBean.incrementar(recomendado.id)}"
+                                                             process="@this"
+                                                             update="@form"
+                                                             styleClass="stepper-button"
+                                                             title="Agregar uno"/>
+                                        </h:panelGroup>
+                                    </div>
+
+                                </article>
+
+                            </ui:repeat>
+
+                        </div>
+
+                    </h:panelGroup>
                 </h:panelGroup>
 
                 <h:panelGroup layout="block"

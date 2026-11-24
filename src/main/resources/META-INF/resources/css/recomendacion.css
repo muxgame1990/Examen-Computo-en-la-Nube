@@ -1,0 +1,323 @@
+.encuesta-page {
+    flex: 1;
+}
+
+.encuesta-intro {
+    max-width: 640px;
+    margin: -8px 0 clamp(22px, 3vw, 32px);
+    color: #634832;
+    font-size: clamp(15px, 1.6vw, 18px);
+    line-height: 1.5;
+}
+
+.encuesta-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+    gap: clamp(20px, 3vw, 32px);
+}
+
+.encuesta-card,
+.encuesta-resultado,
+.modelo-info {
+    padding: clamp(18px, 3vw, 30px);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 0px 15px #0003;
+}
+
+.encuesta-pregunta {
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid #efe4d6;
+}
+
+.encuesta-pregunta-titulo {
+    margin: 0 0 12px;
+    color: #2b2320;
+    font-size: clamp(16px, 1.7vw, 19px);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+body .encuesta-opciones.ui-selectonebutton {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+body .encuesta-opciones.ui-selectonebutton .ui-button {
+    margin: 0;
+    padding: 9px 16px;
+    border: 1px solid #ddc6ae;
+    border-radius: 7px;
+    background: #fbf0da;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 400;
+    box-shadow: none;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+body .encuesta-opciones.ui-selectonebutton .ui-button .ui-button-text {
+    padding: 0;
+    line-height: 1.2;
+}
+
+body .encuesta-opciones.ui-selectonebutton .ui-button:hover {
+    border-color: #ddc6ae;
+    background: #d7c8a7;
+    color: #000000;
+}
+
+body .encuesta-opciones.ui-selectonebutton .ui-button.ui-state-active,
+body .encuesta-opciones.ui-selectonebutton .ui-button.ui-state-active:hover {
+    border-color: #262626;
+    background: #000000;
+    color: #ffffff;
+}
+
+body .encuesta-opciones.ui-selectonebutton .ui-button.ui-state-focus {
+    outline: 2px solid #741414;
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+body .encuesta-opciones.ui-selectonebutton.ui-state-error .ui-button {
+    border-color: #a51e24;
+}
+
+.encuesta-boton.ui-button {
+    height: 46px;
+    margin-top: 4px;
+    padding: 0 24px;
+    font-size: 14px;
+}
+
+body .encuesta-boton-secundario.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin-top: 22px;
+    padding: 0 18px;
+    border: 1px solid #741414;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #741414;
+    font-size: 13.5px;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+body .encuesta-boton-secundario.ui-button .ui-button-text {
+    padding: 0;
+    line-height: 1;
+}
+
+body .encuesta-boton-secundario.ui-button:hover {
+    border-color: #741414;
+    background: #fbf0da;
+    color: #741414;
+}
+
+.encuesta-resultado {
+    position: sticky;
+    top: 24px;
+}
+
+.resultado-etiqueta {
+    color: #741414;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.resultado-vacio p {
+    margin: 12px 0 0;
+    color: #7a6f66;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.resultado-modelo {
+    margin: 8px 0 0;
+    color: #2b2320;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 600;
+    line-height: 1.05;
+}
+
+.resultado-descripcion {
+    margin: 14px 0 0;
+    color: #634832;
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+.resultado-confianza {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #efe4d6;
+}
+
+.confianza-texto {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    color: #2b2320;
+    font-size: 14px;
+}
+
+.confianza-texto strong {
+    font-size: 22px;
+}
+
+.confianza-barra {
+    height: 10px;
+    margin-top: 10px;
+    border-radius: 999px;
+    background: #efe4d6;
+    overflow: hidden;
+}
+
+.confianza-relleno {
+    height: 100%;
+    border-radius: 999px;
+    background: #246b43;
+}
+
+.confianza-detalle {
+    margin: 10px 0 0;
+    color: #7a6f66;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.modelo-info {
+    margin-top: clamp(24px, 4vw, 40px);
+}
+
+.modelo-info-titulo {
+    margin: 0 0 16px;
+    color: #2b2320;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 600;
+}
+
+.modelo-datos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+}
+
+.modelo-datos dt {
+    color: #7a6f66;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.modelo-datos dd {
+    margin: 4px 0 0;
+    color: #2b2320;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.modelo-datos .modelo-ubicacion {
+    grid-column: 1 / -1;
+}
+
+.modelo-datos .modelo-ubicacion dd {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13.5px;
+}
+
+.encuestas-guardadas {
+    margin-top: clamp(24px, 4vw, 40px);
+    padding: clamp(18px, 3vw, 30px);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 0px 15px #0003;
+}
+
+.encuestas-titulo {
+    margin: 0 0 16px;
+    color: #2b2320;
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 600;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+.tabla-encuestas {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-encuestas th {
+    padding: 10px 12px;
+    border-bottom: 2px solid #ddc6ae;
+    color: #7a6f66;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tabla-encuestas td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #efe4d6;
+    color: #2b2320;
+    white-space: nowrap;
+}
+
+.tabla-encuestas tbody tr:hover {
+    background: #faf5ef;
+}
+
+.tabla-encuestas .celda-modelo {
+    color: #741414;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .encuesta-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .encuesta-resultado {
+        position: static;
+    }
+
+    .modelo-datos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .encuesta-boton.ui-button {
+        width: 100%;
+    }
+
+    .modelo-datos {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body .encuesta-opciones.ui-selectonebutton .ui-button {
+        transition: none;
+    }
+}

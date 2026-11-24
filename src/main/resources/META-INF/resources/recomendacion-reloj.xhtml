@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>AVANTI SHOP - Encuentra tu reloj</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="recomendacion.css"/>
+</h:head>
+
+<h:body>
+
+    <h:form id="encuestaForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a class="is-active" href="recomendacion-reloj.xhtml">Encuesta</a>
+                    <a href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+            </header>
+
+            <main class="catalog encuesta-page">
+
+                <p:growl id="mensajes"
+                         showDetail="true"
+                         life="5000"/>
+
+                <h1 class="page-title">Encuentra tu reloj ideal</h1>
+
+                <p class="encuesta-intro">
+                    Contesta cuatro preguntas y nuestro modelo de inteligencia artificial
+                    te dirá qué reloj va mejor contigo.
+                </p>
+
+                <div class="encuesta-layout">
+
+                    <section class="encuesta-card" aria-label="Encuesta">
+
+                        <div class="encuesta-pregunta">
+                            <h2 class="encuesta-pregunta-titulo">1. ¿Qué te interesa más?</h2>
+                            <p:selectOneButton id="interesPrincipal"
+                                               value="#{encuestaRelojBean.interesPrincipal}"
+                                               styleClass="encuesta-opciones"
+                                               required="true"
+                                               requiredMessage="Responde la pregunta 1.">
+                                <f:selectItem itemValue="health" itemLabel="Mi salud"/>
+                                <f:selectItem itemValue="appearance" itemLabel="Mi apariencia"/>
+                                <f:selectItem itemValue="both" itemLabel="Ambas"/>
+                            </p:selectOneButton>
+                        </div>
+
+                        <div class="encuesta-pregunta">
+                            <h2 class="encuesta-pregunta-titulo">2. ¿Cuánto ejercicio haces actualmente?</h2>
+                            <p:selectOneButton id="nivelEjercicio"
+                                               value="#{encuestaRelojBean.nivelEjercicio}"
+                                               styleClass="encuesta-opciones"
+                                               required="true"
+                                               requiredMessage="Responde la pregunta 2.">
+                                <f:selectItem itemValue="sedentary" itemLabel="Casi nada"/>
+                                <f:selectItem itemValue="moderate" itemLabel="Algo"/>
+                                <f:selectItem itemValue="active" itemLabel="Mucho"/>
+                            </p:selectOneButton>
+                        </div>
+
+                        <div class="encuesta-pregunta">
+                            <h2 class="encuesta-pregunta-titulo">3. ¿Qué tan motivado estás para entrenar?</h2>
+                            <p:selectOneButton id="motivacion"
+                                               value="#{encuestaRelojBean.motivacion}"
+                                               styleClass="encuesta-opciones"
+                                               required="true"
+                                               requiredMessage="Responde la pregunta 3.">
+                                <f:selectItem itemValue="moderate" itemLabel="Normal"/>
+                                <f:selectItem itemValue="aggressive" itemLabel="Muy motivado"/>
+                            </p:selectOneButton>
+                        </div>
+
+                        <div class="encuesta-pregunta">
+                            <h2 class="encuesta-pregunta-titulo">4. ¿Te sientes cómodo usando dispositivos tecnológicos?</h2>
+                            <p:selectOneButton id="comodoTecnologia"
+                                               value="#{encuestaRelojBean.comodoTecnologia}"
+                                               styleClass="encuesta-opciones"
+                                               required="true"
+                                               requiredMessage="Responde la pregunta 4.">
+                                <f:selectItem itemValue="yes" itemLabel="Sí"/>
+                                <f:selectItem itemValue="no" itemLabel="No"/>
+                            </p:selectOneButton>
+                        </div>
+
+                        <p:commandButton value="Obtener recomendación"
+                                         action="#{encuestaRelojBean.recomendar}"
+                                         process="@form"
+                                         update="@form"
+                                         styleClass="buy-button encuesta-boton"/>
+
+                    </section>
+
+                    <aside class="encuesta-resultado" aria-label="Resultado" aria-live="polite">
+
+                        <h:panelGroup layout="block"
+                                      styleClass="resultado-vacio"
+                                      rendered="#{empty encuestaRelojBean.resultado}">
+                            <span class="resultado-etiqueta">Tu recomendación</span>
+                            <p>Contesta las cuatro preguntas y aquí aparecerá el reloj que mejor se adapta a ti.</p>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block"
+                                      rendered="#{not empty encuestaRelojBean.resultado}">
+
+                            <span class="resultado-etiqueta">Te recomendamos</span>
+
+                            <h2 class="resultado-modelo">#{encuestaRelojBean.nombreModelo}</h2>
+
+                            <p class="resultado-descripcion">#{encuestaRelojBean.descripcionModelo}</p>
+
+                            <div class="resultado-confianza">
+                                <div class="confianza-texto">
+                                    <span>Confianza del modelo</span>
+                                    <strong>#{encuestaRelojBean.resultado.porcentaje} %</strong>
+                                </div>
+                                <div class="confianza-barra">
+                                    <div class="confianza-relleno"
+                                         style="width: #{encuestaRelojBean.resultado.porcentaje}%;"></div>
+                                </div>
+                                <p class="confianza-detalle">
+                                    #{encuestaRelojBean.resultado.votosModelo} de
+                                    #{encuestaRelojBean.resultado.totalArboles} árboles votaron por este modelo
+                                    (i100: #{encuestaRelojBean.resultado.votos['i100']},
+                                    i500: #{encuestaRelojBean.resultado.votos['i500']}).
+                                </p>
+                            </div>
+
+                            <p:commandButton value="Contestar de nuevo"
+                                             action="#{encuestaRelojBean.nuevaEncuesta}"
+                                             process="@this"
+                                             update="@form"
+                                             styleClass="encuesta-boton-secundario">
+                                <p:resetInput target="@form"/>
+                            </p:commandButton>
+
+                        </h:panelGroup>
+
+                    </aside>
+
+                </div>
+
+                <h:panelGroup layout="block"
+                              styleClass="modelo-info"
+                              rendered="#{not empty encuestaRelojBean.modelo}">
+
+                    <h2 class="modelo-info-titulo">Sobre el modelo</h2>
+
+                    <dl class="modelo-datos">
+                        <div>
+                            <dt>Algoritmo</dt>
+                            <dd>Random Forest de #{encuestaRelojBean.modelo.numeroArboles} árboles</dd>
+                        </div>
+                        <div>
+                            <dt>Datos de entrenamiento</dt>
+                            <dd>#{encuestaRelojBean.modelo.registrosEntrenamiento} encuestas</dd>
+                        </div>
+                        <div>
+                            <dt>Precisión fuera de bolsa</dt>
+                            <dd>#{encuestaRelojBean.precisionModelo} %</dd>
+                        </div>
+                        <div>
+                            <dt>Entrenado</dt>
+                            <dd>#{encuestaRelojBean.modelo.fechaEntrenamiento}</dd>
+                        </div>
+                        <div class="modelo-ubicacion">
+                            <dt>Guardado en</dt>
+                            <dd>#{encuestaRelojBean.ubicacionModelo}</dd>
+                        </div>
+                    </dl>
+
+                    <p:commandButton value="Reentrenar modelo"
+                                     action="#{encuestaRelojBean.reentrenar}"
+                                     process="@this"
+                                     update="@form"
+                                     rendered="#{sesionBean.admin}"
+                                     styleClass="encuesta-boton-secundario"/>
+
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"
+                              styleClass="encuestas-guardadas"
+                              rendered="#{sesionBean.loggedIn and not empty encuestaRelojBean.historial}">
+
+                    <h2 class="encuestas-titulo">Tus encuestas</h2>
+
+                    <div class="tabla-contenedor">
+                        <table class="tabla-encuestas">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Interés</th>
+                                <th>Ejercicio</th>
+                                <th>Motivación</th>
+                                <th>Tecnología</th>
+                                <th>Recomendación</th>
+                                <th>Confianza</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{encuestaRelojBean.historial}" var="e">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{e.fechaHora}">
+                                            <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{encuestaRelojBean.etiquetasInteres[e.interesPrincipal]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasNivel[e.nivelEjercicio]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasMotivacion[e.motivacion]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasTecnologia[e.comodoTecnologia]}</td>
+                                    <td class="celda-modelo">#{encuestaRelojBean.nombreDe(e.modeloRecomendado)}</td>
+                                    <td>#{e.porcentaje} %</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"
+                              styleClass="encuestas-guardadas"
+                              rendered="#{sesionBean.admin and not empty encuestaRelojBean.ultimasEncuestas}">
+
+                    <h2 class="encuestas-titulo">Últimas encuestas de todos los clientes</h2>
+
+                    <div class="tabla-contenedor">
+                        <table class="tabla-encuestas">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Interés</th>
+                                <th>Ejercicio</th>
+                                <th>Motivación</th>
+                                <th>Tecnología</th>
+                                <th>Recomendación</th>
+                                <th>Confianza</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{encuestaRelojBean.ultimasEncuestas}" var="e">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{e.fechaHora}">
+                                            <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{empty e.idPublicoCliente ? 'Anónimo' : e.idPublicoCliente}</td>
+                                    <td>#{encuestaRelojBean.etiquetasInteres[e.interesPrincipal]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasNivel[e.nivelEjercicio]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasMotivacion[e.motivacion]}</td>
+                                    <td>#{encuestaRelojBean.etiquetasTecnologia[e.comodoTecnologia]}</td>
+                                    <td class="celda-modelo">#{encuestaRelojBean.nombreDe(e.modeloRecomendado)}</td>
+                                    <td>#{e.porcentaje} %</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+</h:body>
+</html>
