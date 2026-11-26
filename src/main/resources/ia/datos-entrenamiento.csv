@@ -1,0 +1,16 @@
+interes,ejercicio,motivacion,tecnologia,modelo
+ambos,sedentario,normal,si,i100
+ambos,sedentario,normal,no,i100
+salud,sedentario,normal,si,i500
+apariencia,activo,normal,si,i500
+apariencia,moderado,muy_motivado,si,i500
+apariencia,moderado,muy_motivado,no,i100
+salud,moderado,muy_motivado,no,i500
+ambos,activo,normal,si,i100
+ambos,moderado,muy_motivado,si,i500
+apariencia,activo,muy_motivado,si,i500
+ambos,activo,muy_motivado,no,i500
+salud,activo,normal,no,i500
+salud,sedentario,muy_motivado,si,i500
+apariencia,activo,normal,no,i100
+salud,sedentario,normal,no,i100

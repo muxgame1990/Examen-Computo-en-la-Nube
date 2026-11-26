@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>AVANTI SHOP - Encuentra tu pulsera</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
+
+    <h:outputStylesheet library="css"
+                        name="landing.css"/>
+
+    <h:outputStylesheet library="css"
+                        name="recomendador-bayes.css"/>
+</h:head>
+
+<h:body styleClass="bayes-body">
+
+    <h:form id="bayesForm">
+
+        <div class="site">
+
+            <header class="site-header">
+
+                <a class="brand" href="index.xhtml">AvanTI SHOP</a>
+
+                <nav class="main-nav" aria-label="Navegación principal">
+                    <a href="index.xhtml">Tienda</a>
+                    <a class="is-active" href="recomendador-bayes.xhtml">Recomendador</a>
+                    <a href="carrito.xhtml">
+                        Carrito
+                        <h:outputText value="#{carritoBean.cantidadLineas}"
+                                      styleClass="cart-badge"
+                                      rendered="#{carritoBean.cantidadLineas gt 0}"/>
+                    </a>
+
+                    <ui:fragment rendered="#{sesionBean.loggedIn}">
+                        <p:commandLink value="Cerrar sesión"
+                                       action="#{sesionBean.logout}"
+                                       ajax="false"/>
+                    </ui:fragment>
+
+                    <ui:fragment rendered="#{not sesionBean.loggedIn}">
+                        <a href="login.xhtml">Iniciar sesión</a>
+                    </ui:fragment>
+                </nav>
+
+            </header>
+
+            <main class="catalog bayes-page">
+
+                <p:growl id="mensajes"
+                         showDetail="true"
+                         life="5000"/>
+
+                <!-- Preguntas -->
+                <div id="preguntas" class="bayes-preguntas">
+
+                    <h1 class="page-title">¿Qué pulsera va contigo?</h1>
+
+                    <p class="bayes-intro">
+                        Contesta cuatro preguntas. Un modelo Naive Bayes compara tus respuestas con las de
+                        otros compradores y te dice qué pulsera te conviene, y por qué.
+                    </p>
+
+                    <div class="bayes-pregunta">
+                        <h3>1. ¿Qué te interesa más?</h3>
+                        <p:selectOneButton id="interes"
+                                           value="#{recomendadorBayesBean.interes}"
+                                           styleClass="bayes-opciones"
+                                           required="true"
+                                           requiredMessage="Contesta la pregunta 1.">
+                            <f:selectItem itemValue="salud" itemLabel="Mi salud"/>
+                            <f:selectItem itemValue="apariencia" itemLabel="Mi apariencia"/>
+                            <f:selectItem itemValue="ambos" itemLabel="Ambas"/>
+                        </p:selectOneButton>
+                    </div>
+
+                    <div class="bayes-pregunta">
+                        <h3>2. ¿Cuánto ejercicio haces?</h3>
+                        <p:selectOneButton id="ejercicio"
+                                           value="#{recomendadorBayesBean.ejercicio}"
+                                           styleClass="bayes-opciones"
+                                           required="true"
+                                           requiredMessage="Contesta la pregunta 2.">
+                            <f:selectItem itemValue="sedentario" itemLabel="Casi nada"/>
+                            <f:selectItem itemValue="moderado" itemLabel="Algo"/>
+                            <f:selectItem itemValue="activo" itemLabel="Mucho"/>
+                        </p:selectOneButton>
+                    </div>
+
+                    <div class="bayes-pregunta">
+                        <h3>3. ¿Qué tan motivado estás para entrenar?</h3>
+                        <p:selectOneButton id="motivacion"
+                                           value="#{recomendadorBayesBean.motivacion}"
+                                           styleClass="bayes-opciones"
+                                           required="true"
+                                           requiredMessage="Contesta la pregunta 3.">
+                            <f:selectItem itemValue="normal" itemLabel="Normal"/>
+                            <f:selectItem itemValue="muy_motivado" itemLabel="Muy motivado"/>
+                        </p:selectOneButton>
+                    </div>
+
+                    <div class="bayes-pregunta">
+                        <h3>4. ¿Te sientes cómodo con la tecnología?</h3>
+                        <p:selectOneButton id="tecnologia"
+                                           value="#{recomendadorBayesBean.tecnologia}"
+                                           styleClass="bayes-opciones"
+                                           required="true"
+                                           requiredMessage="Contesta la pregunta 4.">
+                            <f:selectItem itemValue="si" itemLabel="Sí"/>
+                            <f:selectItem itemValue="no" itemLabel="No"/>
+                        </p:selectOneButton>
+                    </div>
+
+                    <p:commandButton id="btnRecomendar"
+                                     value="Ver mi recomendación"
+                                     action="#{recomendadorBayesBean.recomendar}"
+                                     process="@form"
+                                     update="@form"
+                                     oncomplete="if (!args || !args.validationFailed) { irA('tu-recomendacion'); }"
+                                     styleClass="bayes-boton"/>
+
+                </div>
+
+                <!-- Resultado -->
+                <div id="tu-recomendacion" class="bayes-resultado" aria-live="polite">
+
+                    <h2 class="bayes-titulo">Tu recomendación</h2>
+
+                    <h:panelGroup layout="block"
+                                  styleClass="bayes-vacio"
+                                  rendered="#{empty recomendadorBayesBean.resultado}">
+                        <p>Cuando contestes las cuatro preguntas, aquí verás qué pulsera te conviene
+                            y cuánto pesó cada respuesta.</p>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block"
+                                  rendered="#{not empty recomendadorBayesBean.resultado}">
+
+                        <p class="bayes-modelo">Pulsera #{recomendadorBayesBean.resultado.recomendado}</p>
+                        <p class="bayes-descripcion">#{recomendadorBayesBean.descripcion}</p>
+
+                        <div class="bayes-barras">
+                            <div class="bayes-fila">
+                                <span class="bayes-fila-nombre">i100</span>
+                                <div class="bayes-barra">
+                                    <div class="bayes-relleno relleno-i100"
+                                         style="width: #{recomendadorBayesBean.resultado.porcentajeI100}%;"></div>
+                                </div>
+                                <strong>#{recomendadorBayesBean.resultado.porcentajeI100} %</strong>
+                            </div>
+                            <div class="bayes-fila">
+                                <span class="bayes-fila-nombre">i500</span>
+                                <div class="bayes-barra">
+                                    <div class="bayes-relleno relleno-i500"
+                                         style="width: #{recomendadorBayesBean.resultado.porcentajeI500}%;"></div>
+                                </div>
+                                <strong>#{recomendadorBayesBean.resultado.porcentajeI500} %</strong>
+                            </div>
+                        </div>
+
+                        <h3 class="bayes-subtitulo">¿Por qué?</h3>
+                        <p class="bayes-nota">
+                            Antes de ver tus respuestas, el #{recomendadorBayesBean.porcentajeInicialI100} %
+                            de los compradores eligió i100 y el #{recomendadorBayesBean.porcentajeInicialI500} %
+                            eligió i500. Luego cada respuesta mueve la balanza:
+                        </p>
+
+                        <ul class="bayes-factores">
+                            <ui:repeat value="#{recomendadorBayesBean.explicacion}" var="f">
+                                <li>
+                                    <div class="factor-texto">
+                                        <span class="factor-pregunta">#{f.pregunta}:</span>
+                                        <strong>#{f.respuesta}</strong>
+                                        <span class="factor-detalle">
+                                            la dio el #{f.porcentajeI100} % de los compradores de i100
+                                            y el #{f.porcentajeI500} % de los de i500
+                                        </span>
+                                    </div>
+                                    <span class="factor-chip chip-#{f.favorece}">
+                                        #{f.favorece eq 'neutral' ? 'Neutral' : 'Favorece '.concat(f.favorece)}
+                                    </span>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+
+                        <p:commandButton value="Contestar de nuevo"
+                                         action="#{recomendadorBayesBean.contestarDeNuevo}"
+                                         process="@this"
+                                         update="@form"
+                                         oncomplete="irA('preguntas');"
+                                         styleClass="bayes-boton-secundario">
+                            <p:resetInput target="@form"/>
+                        </p:commandButton>
+
+                    </h:panelGroup>
+
+                </div>
+
+                <!-- Información del modelo -->
+                <h:panelGroup layout="block"
+                              styleClass="bayes-seccion"
+                              rendered="#{not empty recomendadorBayesBean.modelo}">
+
+                    <h2 class="bayes-titulo">Sobre el modelo</h2>
+
+                    <p class="bayes-nota bayes-explicacion">
+                        Naive Bayes aprende contando: de los compradores de cada pulsera, cuántos dieron cada
+                        respuesta. Para una persona nueva multiplica esas proporciones y se queda con la
+                        pulsera de mayor probabilidad.
+                    </p>
+
+                    <dl class="bayes-datos">
+                        <div>
+                            <dt>Algoritmo</dt>
+                            <dd>Naive Bayes</dd>
+                        </div>
+                        <div>
+                            <dt>Datos de entrenamiento</dt>
+                            <dd>#{recomendadorBayesBean.modelo.registros} registros</dd>
+                        </div>
+                        <div>
+                            <dt>Precisión (validación uno fuera)</dt>
+                            <dd>#{recomendadorBayesBean.precision} %</dd>
+                        </div>
+                        <div>
+                            <dt>Entrenado</dt>
+                            <dd>#{recomendadorBayesBean.modelo.fechaEntrenamiento}</dd>
+                        </div>
+                        <div class="bayes-ruta">
+                            <dt>Datos en</dt>
+                            <dd>#{recomendadorBayesBean.ubicacionDatos}</dd>
+                        </div>
+                        <div class="bayes-ruta">
+                            <dt>Modelo en</dt>
+                            <dd>#{recomendadorBayesBean.ubicacionModelo}</dd>
+                        </div>
+                    </dl>
+
+                    <p:commandButton id="btnReentrenar"
+                                     value="Reentrenar modelo"
+                                     action="#{recomendadorBayesBean.reentrenar}"
+                                     process="@this"
+                                     update="@form"
+                                     rendered="#{sesionBean.admin}"
+                                     styleClass="bayes-boton-secundario"/>
+
+                </h:panelGroup>
+
+                <!-- Lo que aprendió el modelo -->
+                <h:panelGroup layout="block"
+                              styleClass="bayes-seccion"
+                              rendered="#{not empty recomendadorBayesBean.modelo}">
+
+                    <h2 class="bayes-titulo">Lo que aprendió el modelo</h2>
+                    <p class="bayes-nota">Cuántos compradores de cada pulsera dieron cada respuesta.</p>
+
+                    <div class="tabla-contenedor">
+                        <table class="bayes-tabla">
+                            <thead>
+                            <tr>
+                                <th>Pregunta</th>
+                                <th>Respuesta</th>
+                                <th class="num">i100</th>
+                                <th class="num">i500</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{recomendadorBayesBean.tablaConteos}" var="c">
+                                <tr class="#{empty c.pregunta ? '' : 'fila-grupo'}">
+                                    <td class="celda-pregunta">#{c.pregunta}</td>
+                                    <td>#{c.respuesta}</td>
+                                    <td class="num">#{c.i100}</td>
+                                    <td class="num">#{c.i500}</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2">Total de compradores</td>
+                                <td class="num">#{recomendadorBayesBean.modelo.totalPorClase['i100']}</td>
+                                <td class="num">#{recomendadorBayesBean.modelo.totalPorClase['i500']}</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+                <!-- Datos de entrenamiento -->
+                <h:panelGroup layout="block"
+                              styleClass="bayes-seccion"
+                              rendered="#{not empty recomendadorBayesBean.modelo}">
+
+                    <h2 class="bayes-titulo">Datos de entrenamiento</h2>
+                    <p class="bayes-nota">Las encuestas con las que se entrenó el modelo.</p>
+
+                    <div class="tabla-contenedor">
+                        <table class="bayes-tabla">
+                            <thead>
+                            <tr>
+                                <th class="num">#</th>
+                                <th>Interés</th>
+                                <th>Ejercicio</th>
+                                <th>Motivación</th>
+                                <th>Tecnología</th>
+                                <th>Pulsera</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{recomendadorBayesBean.datos}" var="d" varStatus="estado">
+                                <tr>
+                                    <td class="num">#{estado.index + 1}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(d['interes'])}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(d['ejercicio'])}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(d['motivacion'])}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(d['tecnologia'])}</td>
+                                    <td class="celda-modelo">#{d['modelo']}</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+                <!-- Historial del usuario -->
+                <h:panelGroup layout="block"
+                              styleClass="bayes-seccion"
+                              rendered="#{sesionBean.loggedIn and not empty recomendadorBayesBean.historial}">
+
+                    <h2 class="bayes-titulo">Tus recomendaciones</h2>
+
+                    <div class="tabla-contenedor">
+                        <table class="bayes-tabla">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Interés</th>
+                                <th>Ejercicio</th>
+                                <th>Motivación</th>
+                                <th>Tecnología</th>
+                                <th>Pulsera</th>
+                                <th class="num">Probabilidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{recomendadorBayesBean.historial}" var="h">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{h.fechaHora}">
+                                            <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{recomendadorBayesBean.etiqueta(h.interes)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(h.ejercicio)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(h.motivacion)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(h.tecnologia)}</td>
+                                    <td class="celda-modelo">#{h.recomendado}</td>
+                                    <td class="num">#{h.porcentaje} %</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+                <!-- Últimas consultas (solo administrador) -->
+                <h:panelGroup layout="block"
+                              styleClass="bayes-seccion"
+                              rendered="#{sesionBean.admin and not empty recomendadorBayesBean.ultimas}">
+
+                    <h2 class="bayes-titulo">Últimas consultas de todos los clientes</h2>
+
+                    <div class="tabla-contenedor">
+                        <table class="bayes-tabla">
+                            <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Interés</th>
+                                <th>Ejercicio</th>
+                                <th>Motivación</th>
+                                <th>Tecnología</th>
+                                <th>Pulsera</th>
+                                <th class="num">Probabilidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{recomendadorBayesBean.ultimas}" var="u">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{u.fechaHora}">
+                                            <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{empty u.idPublicoCliente ? 'Sin sesión' : u.idPublicoCliente}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(u.interes)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(u.ejercicio)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(u.motivacion)}</td>
+                                    <td>#{recomendadorBayesBean.etiqueta(u.tecnologia)}</td>
+                                    <td class="celda-modelo">#{u.recomendado}</td>
+                                    <td class="num">#{u.porcentaje} %</td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:panelGroup>
+
+            </main>
+
+        </div>
+
+    </h:form>
+
+    <script>
+        // Lleva la página a la sección con ese id, como un enlace href="#id".
+        // Se limpia el hash primero para que funcione aunque se pulse dos veces.
+        function irA(id) {
+            if (window.location.hash === '#' + id) {
+                history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+            window.location.hash = id;
+        }
+    </script>
+
+</h:body>
+</html>
